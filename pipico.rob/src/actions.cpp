@@ -143,13 +143,18 @@ void action_t::set_theta(void)
 void action_t::goto_xy(void)
 {
   e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
-  
-  robot.v_req = 0;
-  robot.w_req = 0;
 
-  if (fabs(e_xy) < e_xy_tresh) {
+  thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe);
+  e_theta = dif_angle(thetaf, robot.thetae);
+
+  robot.v_req = v_nom * top_hat_squared(e_theta, M_PI/2);
+  robot.w_req = ktheta * e_theta;
+
+  if (e_xy < e_xy_tresh)
+  {
     done = true;
     robot.v_req = 0;
+    robot.w_req = 0;
   }
 }
 
@@ -158,26 +163,80 @@ void action_t::follow_line(void)
 {
   e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
 
-  robot.v_req = v_nom;
-  robot.w_req = 0;
+  // theta error
+  thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe);
+  e_theta = dif_angle(thetaf, robot.thetae);
 
-  if (fabs(e_xy) < e_xy_tresh) {
+  // distance error
+  float uifx = Pf.x - Pi.x;
+  float uify = Pf.y - Pi.y;
+
+  float vifx = uifx/sqrt(sqr(uifx) + sqr(uify));
+  float vify = uify/sqrt(sqr(uifx) + sqr(uify));
+
+  float uirx = robot.xe - Pi.x;
+  float uiry = robot.ye - Pi.y;
+
+  float e_n = vifx * uiry - vify * uirx;
+
+  // finally
+  robot.w_req = ktheta * e_theta + kn * e_n;
+  robot.v_req = v_nom * top_hat_squared(robot.w_req, w0);
+  
+  if (e_xy < e_xy_tresh)
+  {
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
   }
-
 }
 
 
 void action_t::follow_circle(void)
 {
-  e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
+  // e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
 
-  robot.v_req = v_nom;
-  robot.w_req = 0;
+  // distance error
+  float r = dist(Pi.x, Pi.y, C.x, C.y);
+  float d = dist(robot.xe, robot.ye, C.x,  C.y);
 
-  if (fabs(e_xy) < e_xy_tresh) {
+  float e_n  = r - d;
+
+  //theta error
+  float uCrx = robot.xe - C.x;
+  float uCry = robot.ye - C.y;
+
+  float beta = sign(alpha) * M_PI_2;
+
+  float vtx = cos(beta) * uCrx - sin(beta)* uCry;
+  float vty = sin(beta) * uCrx + cos(beta)* uCry;
+
+  float thetat = atan2(vty, vtx);
+  float e_theta = dif_angle(thetat, robot.thetae);
+  
+  robot.w_req = v_nom/r + ktheta * e_theta + kn * e_n;
+  robot.v_req = v_nom * top_hat_squared(robot.w_req - v_nom/r, w0);
+
+  //obtain final position
+  float uCix = Pi.x - C.x;
+  float uCiy = Pi.y - C.y;
+  float theta_Ci = atan2(uCiy, uCix);
+
+  float uCfx = r*cos(theta_Ci + alpha);
+  float uCfy = r*sin(theta_Ci + alpha);
+
+  Pf.x = C.x + uCfx;
+  Pf.y = C.y + uCfy;
+
+  //stop condition
+  // float uCfx = Pf.x - C.x;
+  // float uCfy = Pf.y - C.y;
+
+  // float err_rot = sign(alpha) * sign(uCfx * uCry - uCfy * uCrx);
+
+  float err_2 = acos((uCfx * uCrx + uCfy * uCry)/(r * sqrt(sqr(uCrx) + sqr(uCry))));
+
+  if (abs(err_2) < e_theta_tresh){
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
