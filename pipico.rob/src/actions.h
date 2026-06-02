@@ -34,17 +34,18 @@
 #include <VectorXf.h>
 
 enum action_state_t {
-  as_stop,
+  as_stop, // 0
   as_set_theta,
-  as_goto_xy,
-  as_follow_line,
-  as_follow_circle,
+  as_goto_xy, // 2
+  as_follow_line, // 3
+  as_follow_circle, // 4
   as_follow_track,
   as_gollow_track_digital,
   as_follow_track_left,
   as_follow_track_right,
   as_follow_wall_right,
-  as_follow_wall_left
+  as_follow_wall_left,
+  as_robot_at_factory // 11
 };
 
 class action_t
