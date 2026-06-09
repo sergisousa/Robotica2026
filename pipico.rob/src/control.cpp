@@ -95,6 +95,9 @@ class main_fsm_t: public state_machine_t
 
     } else if (state == as_follow_wall_left) {  // action follow_wall_left
       action.follow_wall_left();
+    
+    } else if (state == as_robot_at_factory) {  // action robot_at_factory
+      action.robot_at_factory();
 
     } else if (state == 100) {  // Another way to stop the robot
       robot.control_mode = cm_kinematics;
