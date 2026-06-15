@@ -157,7 +157,7 @@ void action_t::goto_xy(void)
     robot.v_req = 0;
     robot.w_req = 0;
     if (robotatfactory) {
-      state = 11;
+      robot.pfsm->force_state(11);
     }
   }
 }
@@ -334,18 +334,18 @@ void action_t::robot_at_factory(void)
   if (!traj_done) {
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
-    start_node = find_nearest_node(current_pos);
-    a_star(start_node, stop_node, path);
+    int start_node = find_nearest_node(current_pos);
+    a_star(start_node, 19, path); // 19 is the node for the tests -> Index 19 : Aruco ID 26
     traj_done = 1;
   } else if (path[idx_path] != -1) {
     Pf.x = node_coords[path[idx_path]][0];
     Pf.y = node_coords[path[idx_path]][1];
-    state = 2;
+    robot.pfsm->force_state(2);
     idx_path += 1;
   } else {
     robotatfactory = 0;
     done = true;
-    state = 0;
+    robot.pfsm->force_state(0);
   }
 }
 

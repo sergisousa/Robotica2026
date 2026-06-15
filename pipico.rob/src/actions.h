@@ -96,6 +96,8 @@ class action_t
     void do_action_list(void);
     void do_action(void);
 
+    void robot_at_factory(void);
+
     void update_mean_abs_w(void);
 };
 
