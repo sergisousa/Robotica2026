@@ -70,5 +70,7 @@ const float node_coords[N_nodes][2] = {
 const int node_labels[N_nodes] = {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 20, 22, 40, 41, 42, 43, 23, 24, 25, 26, 36, 37, 38, 39, 30, 31, 35};
 
 int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]);
+int find_node_idx_by_label(int label);
+void obtain_adj_matrix(float matrix[N_nodes][N_nodes]);
 
 #endif
