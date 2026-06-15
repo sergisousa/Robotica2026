@@ -381,18 +381,18 @@ def draw_weighted_graph(
         if cost is None:
             cost = default_cost
 
-        if cost is not None:
-            ax.text(
-                (x1 + x2) / 2,
-                (y1 + y2) / 2,
-                f"{cost}",
-                fontsize=8,
-                ha='center',
-                va='center',
-                zorder=5,
-                color='darkred',
-                bbox=dict(boxstyle='round,pad=0.15', facecolor='white', alpha=0.8, edgecolor='none'),
-            )
+        # if cost is not None:
+        #     ax.text(
+        #         (x1 + x2) / 2,
+        #         (y1 + y2) / 2,
+        #         f"{cost}",
+        #         fontsize=8,
+        #         ha='center',
+        #         va='center',
+        #         zorder=5,
+        #         color='darkred',
+        #         bbox=dict(boxstyle='round,pad=0.15', facecolor='white', alpha=0.8, edgecolor='none'),
+        #     )
 
     ax.set_aspect('equal')
     ax.set_xlabel('x')

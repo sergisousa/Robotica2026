@@ -69,7 +69,6 @@ class main_fsm_t: public state_machine_t
     {set_next_state(2);}
     if (state == 2 && action.robotatfactory == true)
     {set_next_state(11);}
-
   };
 
 

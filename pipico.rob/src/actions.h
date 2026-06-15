@@ -71,8 +71,8 @@ class action_t
     float wall_dist_right_ref;
 
     int path[N_nodes];
-    int idx_path;
-    int goal_node;
+    int idx_path = 0;
+    int goal_node = 5;
 
     bool done;
     bool stop_at_end;
