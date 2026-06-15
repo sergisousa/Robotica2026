@@ -5,7 +5,7 @@
 #define MAX_connections 4
 
 // define node connections
-int node_conn[N_nodes][MAX_connections] = {
+const int node_conn[N_nodes][MAX_connections] = {
     // -1 means no connection
     {30,  6, -1, -1}, // Node 4
     { 9, 31, -1, -1}, // Node 5
@@ -72,5 +72,6 @@ const int node_labels[N_nodes] = {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 20, 22, 40, 
 int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]);
 int find_node_idx_by_label(int label);
 void obtain_adj_matrix(float matrix[N_nodes][N_nodes]);
+int find_nearest_node(float coords[2]);
 
 #endif
