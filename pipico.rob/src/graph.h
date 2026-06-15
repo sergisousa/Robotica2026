@@ -73,5 +73,6 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]);
 int find_node_idx_by_label(int label);
 void obtain_adj_matrix(float matrix[N_nodes][N_nodes]);
 int find_nearest_node(float coords[2]);
+float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]);
 
 #endif
