@@ -2,6 +2,20 @@
 #include "graph.h"
 #include <cfloat>
 
+int find_nearest_node(float coords[2]) {
+    int final_node;
+    float saved_distance = FLT_MAX;
+    float current_distance = FLT_MAX;
+    for (int i = 0; i < N_nodes; i++) {
+        current_distance = opt_cost_to_go(node_coords[i], coords);
+        if (current_distance < saved_distance) {
+            final_node = i;
+            saved_distance = current_distance;
+        }
+    }
+    return final_node;
+}
+
 void selection_sort(const int size, int idx[], float array[]) {
     // Create index array
     for (int i = 0; i < size; i++) {idx[i] = i;}

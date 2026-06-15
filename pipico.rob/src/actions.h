@@ -31,6 +31,7 @@
 
 #include "Arduino.h"
 #include "robot.h"
+#include "graph.h"
 #include <VectorXf.h>
 
 enum action_state_t {
@@ -69,8 +70,13 @@ class action_t
     float wall_dist_left_ref;
     float wall_dist_right_ref;
 
+    int path[N_nodes];
+    int idx_path;
+
     bool done;
     bool stop_at_end;
+    bool robotatfactory;
+    bool traj_done;
 
     action_t();
 
@@ -89,6 +95,8 @@ class action_t
 
     void do_action_list(void);
     void do_action(void);
+
+    void robot_at_factory(void);
 
     void update_mean_abs_w(void);
 };

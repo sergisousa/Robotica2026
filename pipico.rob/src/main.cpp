@@ -494,7 +494,6 @@ void update_button_state(uint32_t now)
   last_button_state = pico4drive.button_state;
 }
 
-
 void setup()
 {
   // Set the pins as input or output as needed
@@ -649,6 +648,7 @@ void setup()
 
   // WiFi Credentials
   #include "credentials.h"
+  
   strcpy(ssid, WIFI_SSID);
   strcpy(password, WIFI_PASSWORD);
 

@@ -1,11 +1,5 @@
 # PlatformIO build files
 .pio
 
-# library code
-lib
-
-# local WiFi credentials file
-credentials.h
-
 # vscode files (which include a lot of local paths)
 .vscode
