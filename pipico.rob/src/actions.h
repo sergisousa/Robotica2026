@@ -72,6 +72,7 @@ class action_t
 
     int path[N_nodes];
     int idx_path;
+    int goal_node;
 
     bool done;
     bool stop_at_end;

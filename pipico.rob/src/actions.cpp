@@ -335,7 +335,7 @@ void action_t::robot_at_factory(void)
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
     int start_node = find_nearest_node(current_pos);
-    a_star(start_node, 19, path); // 19 is the node for the tests -> Index 19 : Aruco ID 26
+    a_star(start_node, find_node_idx_by_label(goal_node), path); // 19 is the node for the tests -> Index 19 : Aruco ID 26
     traj_done = 1;
   } else if (path[idx_path] != -1) {
     Pf.x = node_coords[path[idx_path]][0];
@@ -344,6 +344,7 @@ void action_t::robot_at_factory(void)
     idx_path += 1;
   } else {
     robotatfactory = 0;
+    traj_done = 0;
     done = true;
     robot.pfsm->force_state(0);
   }

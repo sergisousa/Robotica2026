@@ -604,6 +604,7 @@ void setup()
   pars_list.register_command("cam_off", &(camera_pars.offset_from_axis));
   pars_list.register_command("cam_crop", &(camera_pars.crop_offset));
   pars_list.register_command("cam_rz", &(camera_pars.rot_z));
+  pars_list.register_command("goal_node",&(action.goal_node));
 
   udp_commands.init(process_command, serial_write);
 
