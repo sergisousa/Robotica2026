@@ -62,7 +62,14 @@ class main_fsm_t: public state_machine_t
   {
     // Rules for the state evolution
     if (state == 300 && actions_count >= 1)
-      set_next_state(301);
+    {set_next_state(301);}
+    if (state == 11 && action.done == true)
+    {set_next_state(0);}
+    if (state == 11 && action.next_step == true)
+    {set_next_state(2);}
+    if (state == 2 && action.robotatfactory == true)
+    {set_next_state(11);}
+
   };
 
 

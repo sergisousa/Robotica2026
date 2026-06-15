@@ -78,6 +78,7 @@ class action_t
     bool stop_at_end;
     bool robotatfactory;
     bool traj_done;
+    bool next_step;
 
     action_t();
 

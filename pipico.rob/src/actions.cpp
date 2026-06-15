@@ -151,14 +151,13 @@ void action_t::goto_xy(void)
   robot.v_req = v_nom * top_hat_squared(e_theta, M_PI/2);
   robot.w_req = ktheta * e_theta;
 
+  next_step = false;
+
   if (e_xy < e_xy_tresh)
   {
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
-    if (robotatfactory) {
-      robot.pfsm->force_state(11);
-    }
   }
 }
 
@@ -331,7 +330,9 @@ void action_t::follow_wall_left(void)
 void action_t::robot_at_factory(void)
 {
   robotatfactory = 1;
+  next_step = false;
   if (!traj_done) {
+    done = false;
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
     int start_node = find_nearest_node(current_pos);
@@ -340,13 +341,12 @@ void action_t::robot_at_factory(void)
   } else if (path[idx_path] != -1) {
     Pf.x = node_coords[path[idx_path]][0];
     Pf.y = node_coords[path[idx_path]][1];
-    robot.pfsm->force_state(2);
     idx_path += 1;
+    next_step = true;
   } else {
     robotatfactory = 0;
     traj_done = 0;
     done = true;
-    robot.pfsm->force_state(0);
   }
 }
 
