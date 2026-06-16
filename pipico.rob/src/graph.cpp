@@ -2,8 +2,6 @@
 #include "graph.h"
 #include <cfloat>
 
-float node_adj_matrix[N_nodes][N_nodes];
-
 int find_nearest_node(float coords[2]) {
     int final_node;
     float saved_distance = FLT_MAX;
@@ -53,33 +51,31 @@ int find_node_idx_by_label(int label) {
     return -1;
 }
 
-void obtain_adj_matrix(float matrix[N_nodes][N_nodes]) {
+void obtain_ad_list(float list[N_nodes][MAX_connections]) {
     // make every value zero
     for (int i = 0; i < N_nodes; i++) {
-        for (int j = 0; j < N_nodes; j++) {
-            matrix[i][j] = 0.0;
+        for (int j = 0; j < MAX_connections; j++) {
+            list[i][j] = 0.0;
         }
     }
-    // insert cost of each connection
-    int idx_current_conn[MAX_connections];
+
+    // for every connection, insert cost in list
+    //int idx_current_conn[MAX_connections];
     for (int i = 0; i < N_nodes; i++) {
-        // translate labels to indices in connections
-        for (int idx = 0; idx < MAX_connections; idx++) {
-            if (node_conn[i][idx] != -1) {
-                idx_current_conn[idx] = find_node_idx_by_label(node_conn[i][idx]);
+        // // translate labels to indices in connections
+        // for (int idx = 0; idx < MAX_connections; idx++) {
+        //     if (node_conn[i][idx] != -1) {
+        //         idx_current_conn[idx] = find_node_idx_by_label(node_conn[i][idx]);
+        //     } else {
+        //         idx_current_conn[idx] = -1;
+        //     }
+        // }
+        // go through connections
+        for (int j = 0; j < MAX_connections; j++) {
+            if (node_conn[i][j] != -1) { // (idx_current_conn[j] != -1)
+                list[i][j] = opt_cost_to_go(node_coords[i], node_coords[j]); // cost is the length + we can add other contributions
             } else {
-                idx_current_conn[idx] = -1;
-            }
-        }
-        // go through all the other nodes
-        for (int j = i + 1; j < N_nodes; j++) {
-            // if there is a connection, insert the cost into the matrix
-            for (int idx = 0; idx < MAX_connections; idx++) {
-                if (idx_current_conn[idx] == j) {
-                    float cost = opt_cost_to_go(node_coords[i], node_coords[j]); // cost is the length + we can add other contributions
-                    matrix[i][j] = cost;
-                    matrix[j][i] = cost;
-                }
+                list[i][j] = 0.0;
             }
         }
     }
@@ -102,10 +98,6 @@ int is_array_zero(const int size, const int array[]) {
 }
 
 int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
-    // obtain adjacency matrix from connections (calculating the matrix for now, because its easier to change node connections, and when everything is set we use a defined matrix)
-    // float node_adj_matrix[N_nodes][N_nodes];
-    // obtain_adj_matrix(node_adj_matrix);
-
     // define auxiliary arrays
     int open_nodes[N_nodes];       // keep track of which nodes to explore next
     int closed_nodes[N_nodes];     // keep track of which nodes have already been explored
@@ -151,24 +143,28 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
         }
 
         // find neighbors of current node and explore
-        for (int nbr_idx = 0; nbr_idx < N_nodes; nbr_idx++) {
+        for (int con_idx = 0; con_idx < MAX_connections; con_idx++) {
             // needs to be connected to current node, and not closed
-            if ((node_adj_matrix[current_idx][nbr_idx] > 0.0) && (closed_nodes[nbr_idx] == 0)) {
-                // if the neighbor node has no parent, update its cost and parent to the current node
-                if (node_parent[nbr_idx] == -1) {
-                    past_cost[nbr_idx] = past_cost[current_idx] + node_adj_matrix[current_idx][nbr_idx];
-                    node_parent[nbr_idx] = current_idx;
-                    open_nodes[nbr_idx] = 1;
-                    est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[nbr_idx], node_coords[stop_idx]);
-                } else {
-                    // if the total cost to go to the neighbor node, passing through the current node is better than the previous best path to the neighbor node
-                    // then set the new best path to the one going through the current node
-                    float new_cost = past_cost[current_idx] + node_adj_matrix[current_idx][nbr_idx];
-                    if (new_cost < past_cost[nbr_idx]) {
-                        past_cost[nbr_idx] = new_cost;
+            if (node_ad_list[current_idx][con_idx] > 0.0) {
+                // int nbr_idx = find_node_idx_by_label(node_conn[current_idx][con_idx]);
+                int nbr_idx = node_conn[current_idx][con_idx];
+                if (closed_nodes[nbr_idx] == 0) {
+                    // if the neighbor node has no parent, update its cost and parent to the current node
+                    if (node_parent[nbr_idx] == -1) {
+                        past_cost[nbr_idx] = past_cost[current_idx] + node_ad_list[current_idx][con_idx];
                         node_parent[nbr_idx] = current_idx;
                         open_nodes[nbr_idx] = 1;
                         est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[nbr_idx], node_coords[stop_idx]);
+                    } else {
+                        // if the total cost to go to the neighbor node, passing through the current node is better than the previous best path to the neighbor node
+                        // then set the new best path to the one going through the current node
+                        float new_cost = past_cost[current_idx] + node_ad_list[current_idx][con_idx];
+                        if (new_cost < past_cost[nbr_idx]) {
+                            past_cost[nbr_idx] = new_cost;
+                            node_parent[nbr_idx] = current_idx;
+                            open_nodes[nbr_idx] = 1;
+                            est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[nbr_idx], node_coords[stop_idx]);
+                        }
                     }
                 }
             } 
