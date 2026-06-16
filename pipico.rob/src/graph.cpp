@@ -2,6 +2,8 @@
 #include "graph.h"
 #include <cfloat>
 
+float node_adj_matrix[N_nodes][N_nodes];
+
 int find_nearest_node(float coords[2]) {
     int final_node;
     float saved_distance = FLT_MAX;
@@ -101,8 +103,8 @@ int is_array_zero(const int size, const int array[]) {
 
 int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
     // obtain adjacency matrix from connections (calculating the matrix for now, because its easier to change node connections, and when everything is set we use a defined matrix)
-    float node_adj_matrix[N_nodes][N_nodes];
-    obtain_adj_matrix(node_adj_matrix);
+    // float node_adj_matrix[N_nodes][N_nodes];
+    // obtain_adj_matrix(node_adj_matrix);
 
     // define auxiliary arrays
     int open_nodes[N_nodes];       // keep track of which nodes to explore next
