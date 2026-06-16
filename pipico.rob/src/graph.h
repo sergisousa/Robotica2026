@@ -5,7 +5,7 @@
 #define MAX_connections 4
 
 // define node connections
-static const int node_conn[N_nodes][MAX_connections] = {
+const int node_conn[N_nodes][MAX_connections] = {
     // -1 means no connection
     {24,  2, -1, -1}, // Node 4
     { 5, 25, -1, -1}, // Node 5
@@ -37,7 +37,7 @@ static const int node_conn[N_nodes][MAX_connections] = {
 };
 
 // define coordinates {x,y} of each node
-static const float node_coords[N_nodes][2] = {
+const float node_coords[N_nodes][2] = {
     {  0.0f,  0.355f}, // Node 4
     {0.695f,  0.355f}, // Node 5
     {  0.0f,   0.15f}, // Node 6
@@ -67,8 +67,8 @@ static const float node_coords[N_nodes][2] = {
     {0.695f,  -0.15f} // Node 35
 };
 
-static float node_ad_list[N_nodes][MAX_connections];
-static const int node_labels[N_nodes] = {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 20, 22, 40, 41, 42, 43, 23, 24, 25, 26, 36, 37, 38, 39, 30, 31, 35};
+float node_ad_list[N_nodes][MAX_connections];
+const int node_labels[N_nodes] = {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 20, 22, 40, 41, 42, 43, 23, 24, 25, 26, 36, 37, 38, 39, 30, 31, 35};
 
 int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]);
 int find_node_idx_by_label(int label);
