@@ -64,8 +64,8 @@ class main_fsm_t: public state_machine_t
     if (state == 300 && actions_count >= 1){
       set_next_state(301);
     } else if (state == 11 && action.next_step == true){
-      set_next_state(2);
-    } else if (state == 2 && action.done && action.robotatfactory){
+      set_next_state(3);
+    } else if (state == 3 && action.done && action.robotatfactory){
       set_next_state(11);
     } else if (state == 11 && action.done == true){
       set_next_state(200);
