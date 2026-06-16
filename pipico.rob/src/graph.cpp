@@ -73,7 +73,13 @@ void obtain_ad_list(float list[N_nodes][MAX_connections]) {
         // go through connections
         for (int j = 0; j < MAX_connections; j++) {
             if (node_conn[i][j] != -1) { // (idx_current_conn[j] != -1)
-                list[i][j] = opt_cost_to_go(node_coords[i], node_coords[j]); // cost is the length + we can add other contributions
+                int nbr_label = node_conn[i][j];
+                int nbr_idx = find_node_idx_by_label(nbr_label);
+                if (nbr_idx >= 0) {
+                    list[i][j] = opt_cost_to_go(node_coords[i], node_coords[nbr_idx]); // cost is the length + we can add other contributions
+                } else {
+                    list[i][j] = 0.0;
+                }
             } else {
                 list[i][j] = 0.0;
             }
@@ -118,6 +124,7 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
     past_cost[current_idx] = 0;
     open_nodes[current_idx] = 1;
     est_total_cost[current_idx] = past_cost[current_idx] + opt_cost_to_go(node_coords[current_idx], node_coords[stop_idx]);
+    Serial.printf("a_star: start=%d stop=%d\n", start_idx, stop_idx);   
 
     // algorithm logic
     while (!is_array_zero(N_nodes, open_nodes)) {
@@ -139,6 +146,12 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
                 node_pos += 1;
             }
             final_path[size_final - node_pos] = idx;
+            // print path for debug
+            Serial.printf("a_star: found path size=%d: ", size_final + 1);
+            for (int k = 0; k <= size_final; k++) {
+                Serial.printf("%d ", final_path[k]);
+            }
+            Serial.printf("\n");
             return 1;
         }
 
@@ -146,8 +159,13 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
         for (int con_idx = 0; con_idx < MAX_connections; con_idx++) {
             // needs to be connected to current node, and not closed
             if (node_ad_list[current_idx][con_idx] > 0.0) {
-                // int nbr_idx = find_node_idx_by_label(node_conn[current_idx][con_idx]);
-                int nbr_idx = node_conn[current_idx][con_idx];
+                int nbr_label = node_conn[current_idx][con_idx];
+                int nbr_idx = find_node_idx_by_label(nbr_label);
+                if (nbr_idx < 0) {
+                    // invalid neighbor label
+                    Serial.printf("a_star: invalid neighbor label %d at node %d slot %d\n", nbr_label, current_idx, con_idx);
+                    continue;
+                }
                 if (closed_nodes[nbr_idx] == 0) {
                     // if the neighbor node has no parent, update its cost and parent to the current node
                     if (node_parent[nbr_idx] == -1) {
@@ -176,14 +194,32 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]) {
         // sort the nodes by lowest estimated total cost
         int sorted_idx[N_nodes];
         selection_sort(N_nodes, sorted_idx, est_total_cost);
-        // select the first node that is not closed
+        // select the first node that is still open and not closed
+        bool found_next = false;
         for (int i = 0; i < N_nodes; i++) {
-            if (closed_nodes[sorted_idx[i]] == 0) {
-                current_idx = sorted_idx[i];
+            int idx = sorted_idx[i];
+            if (closed_nodes[idx] == 0 && open_nodes[idx] == 1) {
+                current_idx = idx;
+                found_next = true;
                 break;
             }
         }
+        if (!found_next) {
+            Serial.printf("a_star: no next open node, failing (current=%d)\n", current_idx);
+            // dump neighbor info for debugging
+            for (int j = 0; j < MAX_connections; j++) {
+                int nbr = node_conn[current_idx][j];
+                Serial.printf(" slot %d: nbr=%d ad=%.6f", j, nbr, node_ad_list[current_idx][j]);
+                if (nbr != -1) {
+                    Serial.printf(" open=%d closed=%d parent=%d est=%.6f past=%.6f", open_nodes[nbr], closed_nodes[nbr], node_parent[nbr], est_total_cost[nbr], past_cost[nbr]);
+                }
+                Serial.printf("\n");
+            }
+            break;
+        }
     }
+    Serial.printf("a_star: failed to find path from %d to %d\n", start_idx, stop_idx);
+    Serial.println();
     return 0; // failed to find a path
 }
 

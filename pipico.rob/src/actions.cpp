@@ -158,6 +158,9 @@ void action_t::goto_xy(void)
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
+    if (robotatfactory){
+      robot.pfsm->force_state(11);
+    }
   }
 }
 
@@ -338,11 +341,27 @@ void action_t::robot_at_factory(void)
     int start_node = find_nearest_node(current_pos);
     a_star(start_node, find_node_idx_by_label(goal_node), path);
     traj_done = 1;
+    Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.print(goal_node);
+    Serial.print(find_node_idx_by_label(goal_node));
+    Serial.printf("Path: ");
+    for (int i = 0; i < N_nodes; i++) {
+      Serial.printf("%d ", path[i]);
+    }
+    Serial.println();
+    Serial.println();
+    Serial.println();
   } else if (path[idx_path] != -1) {
     Pf.x = node_coords[path[idx_path]][0];
     Pf.y = node_coords[path[idx_path]][1];
     idx_path += 1;
     next_step = true;
+    done = false;
+    Serial.println();
+    Serial.printf("Next node: %d\n", idx_path);
+    Serial.println();
   } else {
     robotatfactory = 0;
     traj_done = 0;
