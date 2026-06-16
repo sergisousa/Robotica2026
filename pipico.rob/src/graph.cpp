@@ -126,21 +126,11 @@ void obtain_ad_list(float list[N_nodes][MAX_connections]) {
             list[i][j] = 0.0;
         }
     }
-
     // for every connection, insert cost in list
-    //int idx_current_conn[MAX_connections];
     for (int i = 0; i < N_nodes; i++) {
-        // // translate labels to indices in connections
-        // for (int idx = 0; idx < MAX_connections; idx++) {
-        //     if (node_conn[i][idx] != -1) {
-        //         idx_current_conn[idx] = find_node_idx_by_label(node_conn[i][idx]);
-        //     } else {
-        //         idx_current_conn[idx] = -1;
-        //     }
-        // }
         // go through connections
         for (int j = 0; j < MAX_connections; j++) {
-            if (node_conn[i][j] != -1) { // (idx_current_conn[j] != -1)
+            if (node_conn[i][j] != -1) {
                 int nbr_idx = node_conn[i][j];
                 list[i][j] = opt_cost_to_go(node_coords[i], node_coords[nbr_idx]); // cost is the length + we can add other contributions
             } else {
