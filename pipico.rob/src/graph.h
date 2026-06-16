@@ -17,7 +17,7 @@ static const int node_conn[N_nodes][MAX_connections] = {
     { 2, 12, -1, -1}, // Node 14
     { 9, 15, -1, -1}, // Node 15
     { 5, 26,  8, -1}, // Node 16
-    {16, 11,  6, 26}, // Node 20
+    {16, 11,  6, -1}, // Node 20
     {10, 16, -1, -1}, // Node 22
     { 7, -1, -1, -1}, // Node 40
     { 4, -1, -1, -1}, // Node 41
@@ -33,7 +33,7 @@ static const int node_conn[N_nodes][MAX_connections] = {
     {19, -1, -1, -1}, // Node 39
     { 0, 25,  2, -1}, // Node 30
     {24,  1,  5, -1}, // Node 31
-    { 9, 10, 18, 19}  // Node 35
+    { 9, 18, 19, -1}  // Node 35
 };
 
 // define coordinates {x,y} of each node
