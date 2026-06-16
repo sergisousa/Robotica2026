@@ -2,6 +2,8 @@
 #include "graph.h"
 #include <cfloat>
 
+float node_ad_list[N_nodes][MAX_connections];
+
 int find_nearest_node(float coords[2]) {
     int final_node;
     float saved_distance = FLT_MAX;

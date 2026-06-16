@@ -68,7 +68,7 @@ class main_fsm_t: public state_machine_t
     } else if (state == 2 && action.done && action.robotatfactory){
       set_next_state(11);
     } else if (state == 11 && action.done == true){
-      set_next_state(0);
+      set_next_state(200);
     }
   };
 
