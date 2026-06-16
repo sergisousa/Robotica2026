@@ -42,6 +42,8 @@ int version = 1103;
 #include <WebServer.h>
 #include <ElegantOTA.h>
 
+#include <graph.h>
+
 WebServer server(80);
 
 unsigned long ota_progress_millis = 0;
@@ -646,7 +648,7 @@ void setup()
   load_commands(pars_fname, serial_commands);
 
   camera_pars.update_matrix();
-  obtain_adj_matrix(node_adj_matrix);
+  obtain_ad_list(node_ad_list);
 
   // WiFi Credentials
   #include "credentials.h"
