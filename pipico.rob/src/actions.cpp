@@ -101,7 +101,7 @@ action_t::action_t()
   thetai = PI/2;
 
   e_theta_tresh = radians(2);
-  e_xy_tresh = 0.02;
+  e_xy_tresh = 0.03;
 
   C.x = 0;
   C.y = 0.5;
