@@ -6,7 +6,6 @@ float node_ad_list[N_nodes][MAX_connections];
 
 int node_labels[N_nodes] = {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 20, 22, 40, 41, 42, 43, 23, 24, 25, 26, 36, 37, 38, 39, 30, 31, 35};
 
-
 // define node connections
 int node_conn[N_nodes][MAX_connections] = {
     // -1 means no connection
@@ -69,6 +68,198 @@ float node_coords[N_nodes][2] = {
     {0.468f,  0.355f}, // Node 31
     {0.695f,  -0.15f} // Node 35
 };
+
+int node_conn_layered[N_layers * N_nodes][MAX_connections_layer];
+float node_ad_list_layered[N_layers * N_nodes][MAX_connections_layer];
+
+// store the direction of each node in each layer
+float node_theta_layers[N_nodes * N_layers];
+
+void generate_graph_with_layers() {
+    // initialize arrays
+    for (int i = 0; i < N_nodes * N_layers; i++) {
+        node_theta_layers[i] = FLT_MAX;       // unoccupied layers have an infinite value (as high as the variable type will go)
+    }
+    for (int i = 0; i < N_nodes * N_layers; i++) {
+        for (int j = 0; j < MAX_connections_layer; j++) {
+            node_conn_layered[i][j] = -1;     // empty connections have value -1
+            node_ad_list_layered[i][j] = 0.0; // empty connections have weight 0.0
+        }
+    }
+
+    int nbr_idx;
+    float theta;
+    bool already_has_layer;
+    int curr_layer_idx;
+
+    // iterate through nodes
+    for (int curr_idx = 0; curr_idx < N_nodes; curr_idx++) { // curr_idx -> index of current node in not-layered graph
+        // iterate through node connections
+        for (int con_idx = 0; con_idx < MAX_connections_layer; con_idx++) { // conn_idx -> index of connection of current node in not-layered graph
+            nbr_idx = node_conn[curr_idx][con_idx];
+            
+            // if a connection exists
+            if (nbr_idx != -1) {
+                // calculate the angle of the connection
+                theta = atan2(node_coords[nbr_idx][1] - node_coords[curr_idx][1], node_coords[nbr_idx][0] - node_coords[curr_idx][0]); // returns angle in range pi to -pi
+
+                // check if the current node already has a layer with the same orientation
+                already_has_layer = false;
+                for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the current node's layer in layered graph
+                    if (fabs(node_theta_layers[N_layers * curr_idx + layer_idx] - theta) < theta_thresh) {
+                        // store current node's layer
+                        curr_layer_idx = layer_idx;
+                        already_has_layer = true;
+                        break;
+                    }
+                }
+
+                // if not, find an unoccupied layer in current node and create it
+                if (!already_has_layer) {
+                    for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the current node's layer in layered graph
+                        if (node_theta_layers[N_layers * curr_idx + layer_idx] > 2 * M_PI) {
+                            // define layer direction
+                            node_theta_layers[N_layers * curr_idx + layer_idx] = theta;
+                            // store current node's layer
+                            curr_layer_idx = layer_idx;
+                            break;
+                        }
+                    }
+                }
+                
+                // check if the neighbor node already has a layer with the same orientation
+                already_has_layer = false;
+                for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the neighbor node's layer in layered graph
+                    if (fabs(node_theta_layers[N_layers * nbr_idx + layer_idx] - theta) < theta_thresh) {
+                        // check for an empty connection slot, and apply connection from current new node to neighbor's new node
+                        for (int conn_layer_idx = 0; conn_layer_idx < MAX_connections_layer; conn_layer_idx++) { // conn_layer_idx -> index of connection of current node in layered graph
+                            if (node_conn_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] == -1) {
+                                node_conn_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] = N_layers * nbr_idx + layer_idx;
+
+                                // apply translation cost to connection
+                                node_ad_list_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] = opt_cost_to_go(node_coords[curr_idx], node_coords[nbr_idx]);
+                                break;
+                            }
+                        }
+                        already_has_layer = true;
+                        break;
+                    }
+                }
+
+                // if not, find an unoccupied layer in neighbor node and create it
+                if (!already_has_layer) {
+                    for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the neighbor node's layer in layered graph
+                        if (node_theta_layers[N_layers * nbr_idx + layer_idx] > 2 * M_PI) {
+                            // define layer direction
+                            node_theta_layers[N_layers * nbr_idx + layer_idx] = theta;
+
+                            // check for an empty connection slot, and apply connection from current new node to neighbor's new node
+                            for (int conn_layer_idx = 0; conn_layer_idx < MAX_connections_layer; conn_layer_idx++) { // conn_layer_idx -> index of connection of current node in layered graph
+                                if (node_conn_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] == -1) {
+                                    node_conn_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] = N_layers * nbr_idx + layer_idx;
+
+                                    // apply translation cost to connection
+                                    node_ad_list_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] = opt_cost_to_go(node_coords[curr_idx], node_coords[nbr_idx]);
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    float curr_layer_theta[N_layers];
+    float ang_difference;
+    int sort_idx[N_layers];
+    int idx_last_layer;
+    int num_layers;
+    int idx_in_sorted_array;
+    int nbr_left_idx;
+    int nbr_right_idx;
+
+    // go through all connections in the same layer and introduce rotation cost
+    for (int curr_idx = 0; curr_idx < N_nodes; curr_idx++) {
+        // transfer theta value of layers to an isolated array to be sorted, and also finding the index of the last occupied layer (which will be useful later)
+        idx_last_layer = -2;
+        for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) {
+            curr_layer_theta[layer_idx] = node_theta_layers[N_layers * curr_idx + layer_idx];
+
+            // if we go after the last layer (infinite value in theta) and we haven't yet found the last layer
+            if ((node_theta_layers[N_layers * curr_idx + layer_idx] > 2 * M_PI) && idx_last_layer == -2) {
+                idx_last_layer = layer_idx - 1;
+            }
+        }
+        // if all layers are occupied -> idx_last_layer = -2
+        if (idx_last_layer == -2) {
+            idx_last_layer = N_layers - 1;
+        }
+
+        // if idx_last_layer = -1 it means this node has no layers (and no connections), so we ignore it
+        if (idx_last_layer != -1) {
+            num_layers = idx_last_layer + 1; // number of occupied layers in this node
+            // sort layers by order of orientation
+            selection_sort(N_layers, sort_idx, curr_layer_theta);
+
+            // go through each occupied layer
+            for (int layer_idx = 0; layer_idx < num_layers; layer_idx++) {
+                // find where it is in the sorted array
+                for (int i = 0; i < N_layers; i++) {
+                    if (sort_idx[i] == layer_idx) {
+                        idx_in_sorted_array = i;
+                        break;
+                    }
+                }
+
+                // find index of the two nodes with closest orientation (to the right and the left of the current nodes in the sorted array)
+                if (idx_in_sorted_array - 1 < 0) {
+                    nbr_left_idx = sort_idx[idx_last_layer];
+                } else {
+                    nbr_left_idx = sort_idx[idx_in_sorted_array - 1];
+                }
+                if (idx_in_sorted_array == idx_last_layer) {
+                    nbr_right_idx = sort_idx[0];
+                } else {
+                    nbr_right_idx = sort_idx[idx_in_sorted_array + 1];
+                }
+                
+                // check for an empty connection slot, create a connection and apply a rotation cost to the neighbor nodes
+                for (int conn_idx = 0; conn_idx < MAX_connections_layer; conn_idx++) {
+                    if (node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx] == -1) {
+                        // if there is more than 1 layer -> connect to the neighbor node
+                        if (num_layers > 1) {
+                            node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx] = N_layers * curr_idx + nbr_left_idx;
+                            ang_difference = node_theta_layers[N_layers * curr_idx + layer_idx] - node_theta_layers[N_layers * curr_idx + nbr_left_idx];
+                            if (ang_difference >  M_PI) {
+                                ang_difference -= 2 * M_PI;
+                            }
+                            if (ang_difference < -M_PI) {
+                                ang_difference += 2 * M_PI;
+                            }
+                            node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx] = K_theta * fabs(ang_difference);
+                        }
+                        // if there is more than 2 layers -> connect to the other neighbor node
+                        if (num_layers > 2) {
+                            node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = N_layers * curr_idx + nbr_right_idx;
+                            ang_difference = node_theta_layers[N_layers * curr_idx + layer_idx] - node_theta_layers[N_layers * curr_idx + nbr_right_idx];
+                            if (ang_difference >  M_PI) {
+                                ang_difference -= 2 * M_PI;
+                            }
+                            if (ang_difference < -M_PI) {
+                                ang_difference += 2 * M_PI;
+                            }
+                            node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = K_theta * fabs(ang_difference);
+                        }
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
 
 int find_nearest_node(float coords[2]) {
     int final_node;
