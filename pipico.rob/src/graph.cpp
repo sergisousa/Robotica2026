@@ -21,10 +21,6 @@ int node_conn[N_nodes + 1][MAX_connections] = {
     { 5, 22,  8, -1}, // Node 16
     {12, 11,  6, -1}, // Node 20
     {10, 12, -1, -1}, // Node 22
-    // { 7, -1, -1, -1}, // Node 40
-    // { 4, -1, -1, -1}, // Node 41
-    // { 3, -1, -1, -1}, // Node 42
-    // { 8, -1, -1, -1}, // Node 43
     {10, 11, 13, 16}, // Node 23
     {12, 14, 17, -1}, // Node 24
     {13, 15, 22, 18}, // Node 25
@@ -53,10 +49,6 @@ float node_coords[N_nodes + 1][2] = {
     {0.695f,    0.0f}, // Node 16
     {  0.0f,  -0.15f}, // Node 20
     {  0.0f, -0.355f}, // Node 22
-    // {0.227f,   0.15f}, // Node 40
-    // {0.468f,   0.15f}, // Node 41
-    // {0.227f,    0.0f}, // Node 42
-    // {0.468f,    0.0f}, // Node 43
     {0.245f, -0.355f}, // Node 23
     {0.395f, -0.355f}, // Node 24
     {0.545f, -0.355f}, // Node 25
@@ -150,6 +142,7 @@ void generate_graph_with_layers(float robot_theta) {
     int nbr_idx;
     float theta;
     bool already_has_layer;
+    bool nbr_is_blocked;
     int curr_layer_idx;
 
     // iterate through nodes
@@ -158,8 +151,8 @@ void generate_graph_with_layers(float robot_theta) {
         for (int con_idx = 0; con_idx < MAX_connections_layer; con_idx++) { // conn_idx -> index of connection of current node in not-layered graph
             nbr_idx = node_conn[curr_idx][con_idx];
             
-            // if a connection exists
-            if (nbr_idx != -1) {
+            // if a connection exists, and the node is not blocked
+            if (nbr_idx != -1 && !array_has_element(blocked_nodes, 8, curr_idx)) {
                 // calculate the angle of the connection
                 theta = atan2(node_coords[nbr_idx][1] - node_coords[curr_idx][1], node_coords[nbr_idx][0] - node_coords[curr_idx][0]); // returns angle in range pi to -pi
 
@@ -186,6 +179,9 @@ void generate_graph_with_layers(float robot_theta) {
                         }
                     }
                 }
+
+                // check if neighbor is a blocked node
+                nbr_is_blocked = array_has_element(blocked_nodes, 8, nbr_idx);
                 
                 // check if the neighbor node already has a layer with the same orientation
                 already_has_layer = false;
@@ -199,6 +195,18 @@ void generate_graph_with_layers(float robot_theta) {
                                 // apply translation cost to connection
                                 node_ad_list_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] = opt_cost_to_go(node_coords[curr_idx], node_coords[nbr_idx]);
                                 break;
+                            }
+                        }
+                        // if neighbor is a blocked node, create a connection from the neighbor back to the current node
+                        if (nbr_is_blocked) {
+                            for (int conn_layer_idx = 0; conn_layer_idx < MAX_connections_layer; conn_layer_idx++) { // conn_layer_idx -> index of connection of current node in layered graph
+                                if (node_conn_layered[N_layers * nbr_idx + layer_idx][conn_layer_idx] == -1) {
+                                    node_conn_layered[N_layers * nbr_idx + layer_idx][conn_layer_idx] = N_layers * curr_idx + curr_layer_idx;
+
+                                    // apply translation cost to connection
+                                    node_ad_list_layered[N_layers * nbr_idx + layer_idx][conn_layer_idx] = opt_cost_to_go(node_coords[curr_idx], node_coords[nbr_idx]);
+                                    break;
+                                }
                             }
                         }
                         already_has_layer = true;
@@ -221,6 +229,19 @@ void generate_graph_with_layers(float robot_theta) {
                                     // apply translation cost to connection
                                     node_ad_list_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] = opt_cost_to_go(node_coords[curr_idx], node_coords[nbr_idx]);
                                     break;
+                                }
+                            }
+
+                            // if neighbor is a blocked node, create a connection from the neighbor back to the current node
+                            if (nbr_is_blocked) {
+                                for (int conn_layer_idx = 0; conn_layer_idx < MAX_connections_layer; conn_layer_idx++) { // conn_layer_idx -> index of connection of current node in layered graph
+                                    if (node_conn_layered[N_layers * nbr_idx + layer_idx][conn_layer_idx] == -1) {
+                                        node_conn_layered[N_layers * nbr_idx + layer_idx][conn_layer_idx] = N_layers * curr_idx + curr_layer_idx;
+
+                                        // apply translation cost to connection
+                                        node_ad_list_layered[N_layers * nbr_idx + layer_idx][conn_layer_idx] = opt_cost_to_go(node_coords[curr_idx], node_coords[nbr_idx]);
+                                        break;
+                                    }
                                 }
                             }
                             break;
@@ -401,40 +422,6 @@ void generate_graph_with_layers(float robot_theta) {
     }
 }
 
-// int find_nearest_node(float coords[2]) {
-//     int final_node;
-//     float saved_distance = FLT_MAX;
-//     float current_distance = FLT_MAX;
-//     for (int i = 0; i < N_nodes; i++) {
-//         current_distance = opt_cost_to_go(node_coords[i], coords);
-//         if (current_distance < saved_distance) {
-//             final_node = i;
-//             saved_distance = current_distance;
-//         }
-//     }
-
-//     float traj_theta = atan2(node_coords[final_node][1] - coords[1], node_coords[final_node][0] - coords[0]);
-
-//     if (opt_cost_to_go(node_coords[final_node][0], node_coords[final_node][1], coords[0], coords[1]) < k){
-        
-//     }
-
-    
-//     int final_node_layered = 0;
-//     float saved_theta = FLT_MAX;
-//     float current_theta = FLT_MAX;
-//     for (int i = 0; i < N_layers; i++){
-//         current_theta = fabs(dif_angle1(traj_theta, node_theta_layers[final_node * N_layers + i]));
-//         if (current_theta < saved_theta){
-//             final_node_layered = i;
-//             saved_theta = current_theta;
-//         }
-
-    
-
-//     return final_node*N_layers + final_node_layered;
-// }
-
 void selection_sort(const int size, int idx[], float array[]) {
     // Create index array
     for (int i = 0; i < size; i++) {idx[i] = i;}
@@ -460,27 +447,6 @@ void selection_sort(const int size, int idx[], float array[]) {
         idx[i] = temp_idx;
     }
 }
-
-// void obtain_ad_list(float list[N_nodes][MAX_connections]) {
-//     // make every value zero
-//     for (int i = 0; i < N_nodes; i++) {
-//         for (int j = 0; j < MAX_connections; j++) {
-//             list[i][j] = 0.0;
-//         }
-//     }
-//     // for every connection, insert cost in list
-//     for (int i = 0; i < N_nodes; i++) {
-//         // go through connections
-//         for (int j = 0; j < MAX_connections; j++) {
-//             if (node_conn[i][j] != -1) {
-//                 int nbr_idx = node_conn[i][j];
-//                 list[i][j] = opt_cost_to_go(node_coords[i], node_coords[nbr_idx]); // cost is the length + we can add other contributions
-//             } else {
-//                 list[i][j] = 0.0;
-//             }
-//         }
-//     }
-// }
 
 float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]) {
     float dist_x = node_coord[0] - stop_node_coord[0];
