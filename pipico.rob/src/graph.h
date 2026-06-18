@@ -10,6 +10,7 @@
 #define theta_thresh 1e-3
 
 extern float Rotation_Weight;
+extern int blocked_nodes[N_blocked];
 extern int node_conn[N_nodes + 1][MAX_connections];
 extern float node_coords[N_nodes + 1][2];
 
@@ -21,8 +22,9 @@ void fill_blocked_nodes();
 void initial_node(float coords[2]);
 float normalize_angle1(float angle);
 float dif_angle1(float a0, float a1);
+int array_has_element(int arr[], int size, int element);
 void generate_graph_with_layers(float robot_theta);
-int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes*N_layers]);
+int a_star(const int start_idx, const int stop_idx, int final_path[(N_nodes + 1) * N_layers + 1]);
 // void obtain_ad_list(float list[N_nodes][MAX_connections]);
 // int find_nearest_node(float coords[2]);
 void selection_sort(const int size, int idx[], float array[]);
