@@ -136,6 +136,9 @@ void action_t::set_theta(void)
     next_step = false;
     done = true;
     robot.w_req = 0;
+    if (robotatfactory){
+      robot.pfsm->force_state(11);
+    }
     return;
   }
 
@@ -339,27 +342,35 @@ void action_t::opt_trajectory(void)
   robotatfactory = 1;
   next_step = false;
   done = false;
+
+  Serial.println("");
+  Serial.println("  Entrou no opt trajectory  ");
+  Serial.println("");
   if (!traj_done) {
     done = false;
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
     initial_node(current_pos);
     generate_graph_with_layers(robot.thetae);
-    a_star((N_nodes + 1) * N_layers, goal_node, path);
+    int start_node = (N_nodes + 1) * N_layers;
+    a_star(start_node, goal_node, path);
     traj_done = 1;
-  } else if (path[idx_path] != -1) {
-    Pf.x = node_coords[path[idx_path]/N_layers][0];
-    Pf.y = node_coords[path[idx_path]/N_layers][1];
-    thetaf = node_theta_layers[path[idx_path]];
-    if (idx_path == 0) {
-      Pi.x = robot.xe;
-      Pi.y = robot.ye;
-      thetai = robot.thetae;
-    } else {
-      Pi.x = node_coords[path[idx_path - 1]/N_layers][0];
-      Pi.y = node_coords[path[idx_path - 1]/N_layers][1];
-      thetai = node_theta_layers[path[idx_path - 1]];
+    Serial.println("");
+    Serial.println("  Calculou a trajetória  ");
+    Serial.println("");
+    for (int i = 0; i <= idx_path; i++) {
+      Serial.print("  Node: ");
+      Serial.println(path[i]);
     }
+  } else if (path[idx_path + 1] != -1) {
+    Pi.x = node_coords[path[idx_path]/N_layers][0];
+    Pi.y = node_coords[path[idx_path]/N_layers][1];
+    thetai = node_theta_layers[path[idx_path]];
+
+    Pf.x = node_coords[path[idx_path + 1]/N_layers][0];
+    Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
+    thetaf = node_theta_layers[path[idx_path + 1]];
+    
     idx_path += 1;
     next_step = true;
     done = false;

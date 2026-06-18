@@ -517,14 +517,14 @@ int is_array_zero(const int size, const int array[]) {
     return result;
 }
 
-int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes * N_layers]) {
+int a_star(const int start_idx, const int stop_idx, int final_path[(N_nodes + 1) * N_layers + 1]) {
     // define auxiliary arrays
-    int open_nodes[N_nodes * N_layers];       // keep track of which nodes to explore next
-    int closed_nodes[N_nodes * N_layers];     // keep track of which nodes have already been explored
-    float past_cost[N_nodes * N_layers];      // cost of each node's best path
-    float est_total_cost[N_nodes * N_layers]; // cost of each node's best path + estimated cost to go to goal
-    int node_parent[N_nodes * N_layers];      // parent of node in the current best path
-    for (int i = 0; i < N_nodes * N_layers; i++) {
+    int open_nodes[(N_nodes + 1) * N_layers + 1];       // keep track of which nodes to explore next
+    int closed_nodes[(N_nodes + 1) * N_layers + 1];     // keep track of which nodes have already been explored
+    float past_cost[(N_nodes + 1) * N_layers + 1];      // cost of each node's best path
+    float est_total_cost[(N_nodes + 1) * N_layers + 1]; // cost of each node's best path + estimated cost to go to goal
+    int node_parent[(N_nodes + 1) * N_layers + 1];      // parent of node in the current best path
+    for (int i = 0; i < (N_nodes + 1) * N_layers + 1; i++) {
         open_nodes[i] = 0;           // 0 to ignore node, 1 to explore node
         closed_nodes[i] = 0;         // 0 for open node,  1 for closed node
         past_cost[i] = FLT_MAX;      // infinite cost for not-explored nodes
@@ -537,10 +537,14 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes * N_l
     int current_idx = start_idx;
     past_cost[current_idx] = 0;
     open_nodes[current_idx] = 1;
-    est_total_cost[current_idx] = past_cost[current_idx] + opt_cost_to_go(node_coords[current_idx / N_layers], node_coords[stop_idx / N_layers]);
+    int dist_idx = current_idx / N_layers;
+    if (dist_idx > N_nodes) {
+        dist_idx -= 1;
+    }
+    est_total_cost[current_idx] = past_cost[current_idx] + opt_cost_to_go(node_coords[dist_idx], node_coords[stop_idx / N_layers]);
 
     // algorithm logic
-    while (!is_array_zero(N_nodes * N_layers, open_nodes)) {
+    while (!is_array_zero((N_nodes + 1) * N_layers + 1, open_nodes)) {
         // end the search if we are arrive in the stop node
         if (current_idx == stop_idx) {
             // obtain the amount of nodes in final path
@@ -573,7 +577,11 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes * N_l
                         past_cost[nbr_idx] = past_cost[current_idx] + node_ad_list_layered[current_idx][con_idx];
                         node_parent[nbr_idx] = current_idx;
                         open_nodes[nbr_idx] = 1;
-                        est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[nbr_idx / N_layers], node_coords[stop_idx / N_layers]);
+                        dist_idx = nbr_idx / N_layers;
+                        if (dist_idx > N_nodes) {
+                            dist_idx -= 1;
+                        }
+                        est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[dist_idx], node_coords[stop_idx / N_layers]);
                     } else {
                         // if the total cost to go to the neighbor node, passing through the current node is better than the previous best path to the neighbor node
                         // then set the new best path to the one going through the current node
@@ -582,7 +590,11 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes * N_l
                             past_cost[nbr_idx] = new_cost;
                             node_parent[nbr_idx] = current_idx;
                             open_nodes[nbr_idx] = 1;
-                            est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[nbr_idx / N_layers], node_coords[stop_idx / N_layers]);
+                            dist_idx = nbr_idx / N_layers;
+                            if (dist_idx > N_nodes) {
+                                dist_idx -= 1;
+                            }
+                            est_total_cost[nbr_idx] = past_cost[nbr_idx] + opt_cost_to_go(node_coords[dist_idx], node_coords[stop_idx / N_layers]);
                         }
                     }
                 }
@@ -593,11 +605,11 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes * N_l
         closed_nodes[current_idx] = 1;
         open_nodes[current_idx] = 0;
         // sort the nodes by lowest estimated total cost
-        int sorted_idx[N_nodes * N_layers];
-        selection_sort(N_nodes * N_layers, sorted_idx, est_total_cost);
+        int sorted_idx[(N_nodes + 1) * N_layers + 1];
+        selection_sort((N_nodes + 1) * N_layers + 1, sorted_idx, est_total_cost);
         // select the first node that is still open and not closed
         bool found_next = false;
-        for (int i = 0; i < N_nodes * N_layers; i++) {
+        for (int i = 0; i < (N_nodes + 1) * N_layers + 1; i++) {
             int idx = sorted_idx[i];
             if (closed_nodes[idx] == 0 && open_nodes[idx] == 1) {
                 current_idx = idx;

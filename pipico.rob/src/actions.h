@@ -70,7 +70,7 @@ class action_t
     float wall_dist_left_ref;
     float wall_dist_right_ref;
 
-    int path[N_nodes * N_layers];
+    int path[(N_nodes + 1) * N_layers + 1];
     int idx_path = 0;
     int goal_node = 5;
 

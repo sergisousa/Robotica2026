@@ -115,7 +115,7 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_follow_wall_left) {  // action follow_wall_left
       action.follow_wall_left();
     
-    } else if (state == as_opt_trajectory) {  // action ropt_trajectory
+    } else if (state == as_opt_trajectory) {  // action opt_trajectory
       action.opt_trajectory();
 
     } else if (state == 100) {  // Another way to stop the robot
