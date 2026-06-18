@@ -1038,6 +1038,8 @@ void loop()
         if (udp_on) serial_commands.send_command("IPR", Udp.remoteIP().toString().c_str());
       }
 
+      serial_commands.send_command("RSSI", WiFi.RSSI());
+
       #undef IRLINE_SENSOR
       #ifdef IRLINE_SENSOR
       serial_commands.send_command("IR0", robot.IRLine.IR_values[0]);
@@ -1072,10 +1074,27 @@ void loop()
 
       //serial_commands.send_command("m1", robot.PWM_1);
       //serial_commands.send_command("m2", robot.PWM_2);
-
+      serial_commands.send_command("lds_start", 1);
       serial_commands.send_command("xe", robot.xe);
       serial_commands.send_command("ye", robot.ye);
       serial_commands.send_command("te", robot.thetae);
+
+      for (int i = 0; i < 139; i++) {
+        for (int j = 0; j < 6; j++) {
+          char str[32];
+          snprintf(str, sizeof(str), "graph_conn_%03d_%d", i, j);
+          serial_commands.send_command(str, node_conn_layered[i][j]);
+        }
+      }
+      for (int i = 0; i < 23; i++) {
+          serial_commands.send_command("graph_x", node_coords[i][0]);
+          serial_commands.send_command("graph_y", node_coords[i][1]);
+      }
+      for (int i = 0; i < 139; i++) {
+        serial_commands.send_command("graph_t", node_theta_layers[i]);
+      }
+
+      serial_commands.send_command("lds_end", 1);
       //serial_commands.send_command("maw", robot.mean_abs_w);
       serial_commands.send_command("rvr", robot.v_req);
       serial_commands.send_command("rwr", robot.w_req);
