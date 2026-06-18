@@ -71,11 +71,11 @@ float node_coords[N_nodes + 1][2] = {
     {0.0f, 0.0f} // Initial node
 };
 
-int node_conn_layered[N_layers * (N_nodes + 1)][MAX_connections_layer];
-float node_ad_list_layered[N_layers * (N_nodes + 1)][MAX_connections_layer];
+int node_conn_layered[N_layers * (N_nodes + 1) + 1][MAX_connections_layer];
+float node_ad_list_layered[N_layers * (N_nodes + 1) + 1][MAX_connections_layer];
 
 // store the direction of each node in each layer
-float node_theta_layers[(N_nodes + 1) * N_layers];
+float node_theta_layers[(N_nodes + 1) * N_layers + 1];
 
 // function to fill blocked_nodes
 void fill_blocked_nodes(){
@@ -324,11 +324,12 @@ void generate_graph_with_layers(float robot_theta) {
     int end_node_idx = N_nodes;
     int end_layer_idx = N_layers;
     int end_sort_idx[N_layers + 1];
+    float end_curr_layer_theta[N_layers + 1];
     node_theta_layers[N_layers * end_node_idx + end_layer_idx] = robot_theta;
     // transfer theta value of layers to an isolated array to be sorted, and also finding the index of the last occupied layer (which will be useful later)
     idx_last_layer = -2;
     for (int layer_idx = 0; layer_idx < N_layers + 1; layer_idx++) {
-        curr_layer_theta[layer_idx] = node_theta_layers[N_layers * end_node_idx + layer_idx];
+        end_curr_layer_theta[layer_idx] = node_theta_layers[N_layers * end_node_idx + layer_idx];
 
         // if we go after the last layer (infinite value in theta) and we haven't yet found the last layer
         if ((node_theta_layers[N_layers * end_node_idx + layer_idx] > 2 * M_PI) && idx_last_layer == -2) {
@@ -344,7 +345,7 @@ void generate_graph_with_layers(float robot_theta) {
     if (idx_last_layer != -1) {
         num_layers = idx_last_layer + 1; // number of occupied layers in this node
         // sort layers by order of orientation
-        selection_sort(N_layers + 1, end_sort_idx, curr_layer_theta);
+        selection_sort(N_layers + 1, end_sort_idx, end_curr_layer_theta);
 
         // find where it is in the sorted array
         for (int i = 0; i < N_layers + 1; i++) {
