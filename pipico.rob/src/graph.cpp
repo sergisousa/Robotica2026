@@ -272,7 +272,7 @@ int find_nearest_node(float coords[2]) {
             saved_distance = current_distance;
         }
     }
-    return final_node;
+    return N_layers*final_node;
 }
 
 void selection_sort(const int size, int idx[], float array[]) {
