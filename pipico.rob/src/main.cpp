@@ -1079,20 +1079,20 @@ void loop()
       serial_commands.send_command("ye", robot.ye);
       serial_commands.send_command("te", robot.thetae);
 
-      for (int i = 0; i < 139; i++) {
-        for (int j = 0; j < 3; j++) {
-          char str[32];
-          snprintf(str, sizeof(str), "graph_conn_%03d_%d", i, j);
-          serial_commands.send_command(str, node_conn_layered[i][j]);
-        }
-      }
-      for (int i = 0; i < 23; i++) {
-          serial_commands.send_command("graph_x", node_coords[i][0]);
-          serial_commands.send_command("graph_y", node_coords[i][1]);
-      }
-      for (int i = 0; i < 139; i++) {
-        serial_commands.send_command("graph_t", node_theta_layers[i]);
-      }
+      // for (int i = 0; i < 139; i++) {
+      //   for (int j = 0; j < 3; j++) {
+      //     char str[32];
+      //     snprintf(str, sizeof(str), "graph_conn_%03d_%d", i, j);
+      //     serial_commands.send_command(str, node_conn_layered[i][j]);
+      //   }
+      // }
+      // for (int i = 0; i < 23; i++) {
+      //     serial_commands.send_command("graph_x", node_coords[i][0]);
+      //     serial_commands.send_command("graph_y", node_coords[i][1]);
+      // }
+      // for (int i = 0; i < 139; i++) {
+      //   serial_commands.send_command("graph_t", node_theta_layers[i]);
+      // }
 
       serial_commands.send_command("lds_end", 1);
       //serial_commands.send_command("maw", robot.mean_abs_w);

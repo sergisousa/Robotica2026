@@ -152,7 +152,7 @@ void generate_graph_with_layers(float robot_theta) {
     // iterate through nodes
     for (int curr_idx = 0; curr_idx < N_nodes + 1; curr_idx++) { // curr_idx -> index of current node in not-layered graph
         // iterate through node connections
-        for (int con_idx = 0; con_idx < MAX_connections_layer; con_idx++) { // conn_idx -> index of connection of current node in not-layered graph
+        for (int con_idx = 0; con_idx < MAX_connections; con_idx++) { // conn_idx -> index of connection of current node in not-layered graph
             nbr_idx = node_conn[curr_idx][con_idx];
             
             // if a connection exists, and the node is not blocked
