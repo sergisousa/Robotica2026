@@ -279,7 +279,7 @@ int find_nearest_node(float coords[2]) {
     float saved_theta = FLT_MAX;
     float current_theta = FLT_MAX;
     for (int i = 0; i < N_layers; i++){
-        current_theta = fabs(dif_angle1(current_theta, node_theta_layers[final_node * N_layers + i]));
+        current_theta = fabs(dif_angle1(traj_theta, node_theta_layers[final_node * N_layers + i]));
         if (current_theta < saved_theta){
             final_node_layered = i;
             saved_theta = current_theta;
