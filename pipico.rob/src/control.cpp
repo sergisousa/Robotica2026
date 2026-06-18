@@ -63,10 +63,22 @@ class main_fsm_t: public state_machine_t
     // Rules for the state evolution
     if (state == 300 && actions_count >= 1){
       set_next_state(301);
+
     } else if (state == 11 && action.next_step == true){
-      set_next_state(3);
+      if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < 0.1){
+        set_next_state(1);
+      } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
+        set_next_state(3);
+      } else {
+        set_next_state(3); // first iteration only
+      }
+
     } else if (state == 3 && action.done && action.robotatfactory){
       set_next_state(11);
+
+    } else if (state == 1 && action.done && action.robotatfactory){
+      set_next_state(11);
+
     } else if (state == 11 && action.done == true){
       set_next_state(200);
     }

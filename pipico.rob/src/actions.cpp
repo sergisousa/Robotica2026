@@ -133,6 +133,7 @@ void action_t::set_theta(void)
   robot.v_req = 0;
   e_theta = dif_angle(thetaf, robot.thetae);
   if (fabs(e_theta) < e_theta_tresh) {
+    next_step = false;
     done = true;
     robot.w_req = 0;
     return;
@@ -194,6 +195,9 @@ void action_t::follow_line(void)
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
+    if (idx_path == 1){
+        idx_path -= 1; // first iteration, after correcting position we need to correct theta
+    }
     if (robotatfactory){
       robot.pfsm->force_state(11);
     }
@@ -342,17 +346,20 @@ void action_t::robot_at_factory(void)
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
     int start_node = find_nearest_node(current_pos);
-    a_star(start_node, find_node_idx_by_label(goal_node), path);
+    a_star(start_node, goal_node, path);
     traj_done = 1;
   } else if (path[idx_path] != -1) {
-    Pf.x = node_coords[path[idx_path]][0];
-    Pf.y = node_coords[path[idx_path]][1];
+    Pf.x = node_coords[path[idx_path]/N_layers][0];
+    Pf.y = node_coords[path[idx_path]/N_layers][1];
+    thetaf = node_theta_layers[path[idx_path]];
     if (idx_path == 0) {
       Pi.x = robot.xe;
       Pi.y = robot.ye;
+      thetai = robot.thetae;
     } else {
-      Pi.x = node_coords[path[idx_path - 1]][0];
-      Pi.y = node_coords[path[idx_path - 1]][1];
+      Pi.x = node_coords[path[idx_path - 1]/N_layers][0];
+      Pi.y = node_coords[path[idx_path - 1]/N_layers][1];
+      thetai = node_theta_layers[path[idx_path - 1]];
     }
     idx_path += 1;
     next_step = true;

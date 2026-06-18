@@ -36,7 +36,7 @@
 
 enum action_state_t {
   as_stop, // 0
-  as_set_theta,
+  as_set_theta, // 1
   as_goto_xy, // 2
   as_follow_line, // 3
   as_follow_circle, // 4
