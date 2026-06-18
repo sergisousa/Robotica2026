@@ -353,7 +353,13 @@ void action_t::opt_trajectory(void)
     initial_node(current_pos);
     generate_graph_with_layers(robot.thetae);
     int start_node = (N_nodes + 1) * N_layers;
-    a_star(start_node, goal_node, path);
+    if (node_theta_layers[goal_node] > 2 * M_PI) {
+      for (int i = 0; i < ((N_nodes + 1) * N_layers + 1); i++) {
+        path[i] = -1;
+      }
+    } else {
+      a_star(start_node, goal_node, path);
+    }
     traj_done = 1;
     Serial.println("");
     Serial.println("  Calculou a trajetória  ");

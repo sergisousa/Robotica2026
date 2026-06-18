@@ -163,7 +163,7 @@ void generate_graph_with_layers(float robot_theta) {
                 // check if the current node already has a layer with the same orientation
                 already_has_layer = false;
                 for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the current node's layer in layered graph
-                    if (fabs(node_theta_layers[N_layers * curr_idx + layer_idx] - theta) < theta_thresh) {
+                    if (fabs(dif_angle1(node_theta_layers[N_layers * curr_idx + layer_idx], theta)) < theta_thresh) {
                         // store current node's layer
                         curr_layer_idx = layer_idx;
                         already_has_layer = true;
@@ -190,7 +190,7 @@ void generate_graph_with_layers(float robot_theta) {
                 // check if the neighbor node already has a layer with the same orientation
                 already_has_layer = false;
                 for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the neighbor node's layer in layered graph
-                    if (fabs(node_theta_layers[N_layers * nbr_idx + layer_idx] - theta) < theta_thresh) {
+                    if (fabs(dif_angle1(node_theta_layers[N_layers * nbr_idx + layer_idx], theta)) < theta_thresh) {
                         // check for an empty connection slot, and apply connection from current new node to neighbor's new node
                         for (int conn_layer_idx = 0; conn_layer_idx < MAX_connections_layer; conn_layer_idx++) { // conn_layer_idx -> index of connection of current node in layered graph
                             if (node_conn_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] == -1) {
