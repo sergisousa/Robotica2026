@@ -342,7 +342,6 @@ void action_t::opt_trajectory(void)
   robotatfactory = 1;
   next_step = false;
   done = false;
-  blocked_node = false;
 
   Serial.println("");
   Serial.println("  Entrou no opt trajectory  ");
@@ -377,9 +376,22 @@ void action_t::opt_trajectory(void)
     Pf.x = node_coords[path[idx_path + 1]/N_layers][0];
     Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
     thetaf = node_theta_layers[path[idx_path + 1]];
-    
+
     if (array_has_element(blocked_nodes, N_blocked, path[idx_path]/N_layers)) {
       blocked_node = true;
+      robot.solenoid_u = 7.0;
+    }
+
+    if (blocked_node) {
+      idx_path += 1;
+      Pi.x = robot.xe;
+      Pi.y = robot.ye;
+      thetai = robot.thetae;
+      
+      Pf.x = node_coords[path[idx_path + 1]/N_layers][0];
+      Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
+      thetai = node_theta_layers[path[idx_path]];
+      blocked_node = false;
     }
 
     idx_path += 1;
