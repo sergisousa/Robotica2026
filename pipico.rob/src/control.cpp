@@ -123,7 +123,7 @@ class main_fsm_t: public state_machine_t
       action.opt_trajectory();
 
     } else if (state == as_backwards_walk) { // action backwards_walk
-      robot.solenoid_u = 4.0;
+      // robot.solenoid_u = 4.0;
       action.backwards_walk();
     
     } else if (state == 100) {  // Another way to stop the robot
