@@ -1,7 +1,7 @@
 #ifndef graph_h
 #define graph_h
 
-#define N_nodes 27
+#define N_nodes 23
 #define N_layers 6
 #define MAX_connections 4
 #define MAX_connections_layer 3
