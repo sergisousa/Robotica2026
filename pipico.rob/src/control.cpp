@@ -68,7 +68,11 @@ class main_fsm_t: public state_machine_t
       if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh){
         set_next_state(as_set_theta);
       } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
-        set_next_state(as_follow_line);
+        if (action.blocked_node) {
+          set_next_state(as_backwards_walk);
+        } else {
+          set_next_state(as_follow_line);
+        }
       } else {
         set_next_state(as_set_theta); // first iteration only
       }
@@ -118,6 +122,10 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_opt_trajectory) {  // action opt_trajectory
       action.opt_trajectory();
 
+    } else if (state == as_backwards_walk) { // action backwards_walk
+      robot.solenoid_u = 4.0;
+      action.backwards_walk();
+    
     } else if (state == 100) {  // Another way to stop the robot
       robot.control_mode = cm_kinematics;
       robot.v_req = 0;

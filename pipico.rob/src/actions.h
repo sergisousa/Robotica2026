@@ -46,7 +46,8 @@ enum action_state_t {
   as_follow_track_right,
   as_follow_wall_right,
   as_follow_wall_left,
-  as_opt_trajectory // 11
+  as_opt_trajectory, // 11
+  as_backwards_walk // 12
 };
 
 class action_t
@@ -79,6 +80,7 @@ class action_t
     bool robotatfactory;
     bool traj_done;
     bool next_step;
+    bool blocked_node;
 
     action_t();
 
@@ -99,6 +101,7 @@ class action_t
     void do_action(void);
 
     void opt_trajectory(void);
+    void backwards_walk(void);
 
     void update_mean_abs_w(void);
 };

@@ -342,6 +342,7 @@ void action_t::opt_trajectory(void)
   robotatfactory = 1;
   next_step = false;
   done = false;
+  blocked_node = false;
 
   Serial.println("");
   Serial.println("  Entrou no opt trajectory  ");
@@ -377,6 +378,10 @@ void action_t::opt_trajectory(void)
     Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
     thetaf = node_theta_layers[path[idx_path + 1]];
     
+    if (array_has_element(blocked_nodes, N_blocked, path[idx_path]/N_layers)) {
+      blocked_node = true;
+    }
+
     idx_path += 1;
     next_step = true;
     done = false;
@@ -387,6 +392,41 @@ void action_t::opt_trajectory(void)
   }
 }
 
+void action_t::backwards_walk(void)
+{
+  e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
+
+  // theta error
+  thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe) + M_PI; // backwards angle
+  e_theta = dif_angle(thetaf, robot.thetae);
+
+  // distance error
+  float uifx = Pf.x - Pi.x;
+  float uify = Pf.y - Pi.y;
+
+  float vifx = uifx/sqrt(sqr(uifx) + sqr(uify));
+  float vify = uify/sqrt(sqr(uifx) + sqr(uify));
+
+  float uirx = robot.xe - Pi.x;
+  float uiry = robot.ye - Pi.y;
+
+  float e_n = vifx * uiry - vify * uirx;
+
+  // finally
+  robot.w_req = ktheta * e_theta + kn * e_n;
+  robot.v_req = -v_nom * top_hat_squared(robot.w_req, w0); // backwards velocity
+  
+  if (e_xy < e_xy_tresh)
+  {
+    next_step = false;
+    done = true;
+    robot.v_req = 0;
+    robot.w_req = 0;
+    if (robotatfactory){
+      robot.pfsm->force_state(11);
+    }
+  }
+}
 
 void action_t::do_action_list(void)
 {
