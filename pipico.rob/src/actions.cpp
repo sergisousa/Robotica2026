@@ -341,6 +341,7 @@ void action_t::opt_trajectory(void)
 {
   robotatfactory = 1;
   next_step = false;
+  done = false;
   if (!traj_done) {
     done = false;
     idx_path = 0;
