@@ -6,9 +6,9 @@
 #define MAX_connections 4
 #define MAX_connections_layer 3
 
-#define K_theta 1.0
 #define theta_thresh 1e-3
 
+extern float Rotation_Weight;
 extern int node_conn[N_nodes][MAX_connections];
 extern float node_coords[N_nodes][2];
 

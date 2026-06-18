@@ -6,6 +6,8 @@ float node_ad_list[N_nodes][MAX_connections];
 
 int node_labels[N_nodes] = {4, 5, 6, 7, 8, 9, 13, 14, 15, 16, 20, 22, 40, 41, 42, 43, 23, 24, 25, 26, 36, 37, 38, 39, 30, 31, 35};
 
+float Rotation_Weight = 1.0;
+
 // define node connections
 int node_conn[N_nodes][MAX_connections] = {
     // -1 means no connection
@@ -238,7 +240,7 @@ void generate_graph_with_layers() {
                             if (ang_difference < -M_PI) {
                                 ang_difference += 2 * M_PI;
                             }
-                            node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx] = K_theta * fabs(ang_difference);
+                            node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx] = Rotation_Weight * fabs(ang_difference);
                         }
                         // if there is more than 2 layers -> connect to the other neighbor node
                         if (num_layers > 2) {
@@ -250,7 +252,7 @@ void generate_graph_with_layers() {
                             if (ang_difference < -M_PI) {
                                 ang_difference += 2 * M_PI;
                             }
-                            node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = K_theta * fabs(ang_difference);
+                            node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = Rotation_Weight * fabs(ang_difference);
                         }
 
                         break;
@@ -396,7 +398,7 @@ int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes * N_l
         for (int con_idx = 0; con_idx < MAX_connections_layer; con_idx++) {
             // needs to be connected to current node, and not closed
             if (node_ad_list_layered[current_idx][con_idx] > 0.0) {
-                int nbr_idx = node_conn[current_idx][con_idx];
+                int nbr_idx = node_conn_layered[current_idx][con_idx];
                 if (closed_nodes[nbr_idx] == 0) {
                     // if the neighbor node has no parent, update its cost and parent to the current node
                     if (node_parent[nbr_idx] == -1) {
