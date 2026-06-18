@@ -1080,7 +1080,7 @@ void loop()
       serial_commands.send_command("te", robot.thetae);
 
       for (int i = 0; i < 139; i++) {
-        for (int j = 0; j < 6; j++) {
+        for (int j = 0; j < 3; j++) {
           char str[32];
           snprintf(str, sizeof(str), "graph_conn_%03d_%d", i, j);
           serial_commands.send_command(str, node_conn_layered[i][j]);
