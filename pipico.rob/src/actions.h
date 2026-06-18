@@ -46,7 +46,7 @@ enum action_state_t {
   as_follow_track_right,
   as_follow_wall_right,
   as_follow_wall_left,
-  as_robot_at_factory // 11
+  as_opt_trajectory // 11
 };
 
 class action_t
@@ -98,7 +98,7 @@ class action_t
     void do_action_list(void);
     void do_action(void);
 
-    void robot_at_factory(void);
+    void opt_trajectory(void);
 
     void update_mean_abs_w(void);
 };

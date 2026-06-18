@@ -648,7 +648,7 @@ void setup()
   load_commands(pars_fname, serial_commands);
 
   camera_pars.update_matrix();
-  obtain_ad_list(node_ad_list);
+  generate_graph_with_layers();
 
   // WiFi Credentials
   #include "credentials.h"

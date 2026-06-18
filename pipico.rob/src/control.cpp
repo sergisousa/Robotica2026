@@ -65,12 +65,12 @@ class main_fsm_t: public state_machine_t
       set_next_state(301);
 
     } else if (state == 11 && action.next_step == true){
-      if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < 0.1){
-        set_next_state(1);
+      if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh){
+        set_next_state(as_set_theta);
       } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
-        set_next_state(3);
+        set_next_state(as_follow_line);
       } else {
-        set_next_state(3); // first iteration only
+        set_next_state(as_follow_line); // first iteration only
       }
 
     } else if (state == 3 && action.done && action.robotatfactory){
@@ -115,8 +115,8 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_follow_wall_left) {  // action follow_wall_left
       action.follow_wall_left();
     
-    } else if (state == as_robot_at_factory) {  // action robot_at_factory
-      action.robot_at_factory();
+    } else if (state == as_opt_trajectory) {  // action ropt_trajectory
+      action.opt_trajectory();
 
     } else if (state == 100) {  // Another way to stop the robot
       robot.control_mode = cm_kinematics;

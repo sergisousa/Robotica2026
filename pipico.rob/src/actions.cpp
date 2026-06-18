@@ -337,7 +337,7 @@ void action_t::follow_wall_left(void)
   robot.v_req = v_nom;
 }
 
-void action_t::robot_at_factory(void)
+void action_t::opt_trajectory(void)
 {
   robotatfactory = 1;
   next_step = false;
