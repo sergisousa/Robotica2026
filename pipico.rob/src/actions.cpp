@@ -195,9 +195,6 @@ void action_t::follow_line(void)
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
-    if (idx_path == 1){
-        idx_path -= 1; // first iteration, after correcting position we need to correct theta
-    }
     if (robotatfactory){
       robot.pfsm->force_state(11);
     }
@@ -346,8 +343,9 @@ void action_t::opt_trajectory(void)
     done = false;
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
-    int start_node = find_nearest_node(current_pos);
-    a_star(start_node, goal_node, path);
+    initial_node(current_pos);
+    generate_graph_with_layers(robot.thetae);
+    a_star((N_nodes + 1) * N_layers, goal_node, path);
     traj_done = 1;
   } else if (path[idx_path] != -1) {
     Pf.x = node_coords[path[idx_path]/N_layers][0];

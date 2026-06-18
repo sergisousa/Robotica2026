@@ -70,7 +70,7 @@ class main_fsm_t: public state_machine_t
       } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
         set_next_state(as_follow_line);
       } else {
-        set_next_state(as_follow_line); // first iteration only
+        set_next_state(as_set_theta); // first iteration only
       }
 
     } else if (state == 3 && action.done && action.robotatfactory){
