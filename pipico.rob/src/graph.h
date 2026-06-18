@@ -19,6 +19,8 @@ extern int node_conn_layered[N_layers * N_nodes][MAX_connections_layer];
 extern float node_ad_list_layered[N_layers * N_nodes][MAX_connections_layer];
 extern float node_theta_layers[N_nodes * N_layers];
 
+float normalize_angle1(float angle);
+float dif_angle1(float a0, float a1);
 void generate_graph_with_layers();
 int a_star(const int start_idx, const int stop_idx, int final_path[N_nodes]);
 int find_node_idx_by_label(int label);

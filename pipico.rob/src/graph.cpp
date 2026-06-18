@@ -274,7 +274,20 @@ int find_nearest_node(float coords[2]) {
             saved_distance = current_distance;
         }
     }
-    return N_layers*final_node;
+    float traj_theta = atan2(node_coords[final_node][1] - coords[1], node_coords[final_node][0] - coords[0]);
+    int final_node_layered = 0;
+    float saved_theta = FLT_MAX;
+    float current_theta = FLT_MAX;
+    for (int i = 0; i < N_layers; i++){
+        current_theta = fabs(dif_angle1(current_theta, node_theta_layers[final_node * N_layers + i]));
+        if (current_theta < saved_theta){
+            final_node_layered = i;
+            saved_theta = current_theta;
+        }
+
+    }
+
+    return final_node*N_layers + final_node_layered;
 }
 
 void selection_sort(const int size, int idx[], float array[]) {
@@ -337,6 +350,25 @@ float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]) 
     float dist_x = node_coord[0] - stop_node_coord[0];
     float dist_y = node_coord[1] - stop_node_coord[1];
     return sqrt(dist_x * dist_x + dist_y * dist_y);
+}
+
+float normalize_angle1(float angle)
+{
+  if (fabs(angle) < M_PI)
+    return angle;
+
+  if (angle >= 0) {
+    angle = fmod(angle + PI, TWO_PI);
+    return angle - PI;
+  } else {
+    angle = fmod(-angle + PI, TWO_PI);
+    return -(angle - PI);
+  }
+}
+
+float dif_angle1(float a0, float a1)
+{
+  return normalize_angle1(normalize_angle1(a0) - normalize_angle1(a1));
 }
 
 int is_array_zero(const int size, const int array[]) {
