@@ -58,7 +58,7 @@ static float seconds(void)
 
 class main_fsm_t: public state_machine_t
 {
-  virtual void next_state_rules(void)
+  virtual void next_state_rules(void)\
   {
     // Rules for the state evolution
     if (state == 300 && actions_count >= 1){
@@ -67,7 +67,7 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_opt_trajectory && action.next_step == true){
       if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh){
         set_next_state(as_set_theta);
-      } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
+      } else if (fabs(dif_angle(action.thetai, action.thetaf)) < action.e_theta_tresh){
         if (action.blocked_node) {
           set_next_state(as_backwards_walk);
           action.blocked_node = false;
@@ -84,7 +84,25 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_set_theta && action.done && action.robotatfactory){
       set_next_state(as_opt_trajectory);
 
+    } else if (state == as_backwards_walk && action.done == true && action.robotatfactory){
+      set_next_state(as_opt_trajectory);
+
     } else if (state == as_opt_trajectory && action.done == true){
+      set_next_state(200);
+
+    } else if (state == as_backwards_walk && action.done == true && !action.robotatfactory){
+      set_next_state(200);
+
+    } else if (state == as_follow_line && action.done == true && !action.robotatfactory){
+      set_next_state(200);
+
+    } else if (state == as_set_theta && action.done == true && !action.robotatfactory){
+      set_next_state(200);
+
+    } else if (state == as_goto_xy && action.done == true && !action.robotatfactory){
+      set_next_state(200);
+
+    } else if (state == as_follow_circle && action.done == true && !action.robotatfactory){
       set_next_state(200);
     }
   };
