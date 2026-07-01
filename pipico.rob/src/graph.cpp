@@ -332,25 +332,13 @@ void generate_graph_with_layers(float robot_theta) {
                         // if there is more than 1 layer -> connect to the neighbor node
                         if (num_layers > 1) {
                             node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx] = N_layers * curr_idx + nbr_left_idx;
-                            ang_difference = node_theta_layers[N_layers * curr_idx + layer_idx] - node_theta_layers[N_layers * curr_idx + nbr_left_idx];
-                            if (ang_difference >  M_PI) {
-                                ang_difference -= 2 * M_PI;
-                            }
-                            if (ang_difference < -M_PI) {
-                                ang_difference += 2 * M_PI;
-                            }
+                            ang_difference = dif_angle1(node_theta_layers[N_layers * curr_idx + layer_idx], node_theta_layers[N_layers * curr_idx + nbr_left_idx]);
                             node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx] = Rotation_Weight * fabs(ang_difference);
                         }
                         // if there is more than 2 layers -> connect to the other neighbor node
                         if (num_layers > 2) {
                             node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = N_layers * curr_idx + nbr_right_idx;
-                            ang_difference = node_theta_layers[N_layers * curr_idx + layer_idx] - node_theta_layers[N_layers * curr_idx + nbr_right_idx];
-                            if (ang_difference >  M_PI) {
-                                ang_difference -= 2 * M_PI;
-                            }
-                            if (ang_difference < -M_PI) {
-                                ang_difference += 2 * M_PI;
-                            }
+                            ang_difference = dif_angle1(node_theta_layers[N_layers * curr_idx + layer_idx], node_theta_layers[N_layers * curr_idx + nbr_right_idx]);
                             node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = Rotation_Weight * fabs(ang_difference);
                         }
 
@@ -414,25 +402,13 @@ void generate_graph_with_layers(float robot_theta) {
                 // if there is more than 1 layer -> connect to the neighbor node
                 if (num_layers > 1) {
                     node_conn_layered[N_layers * end_node_idx + end_layer_idx][conn_idx] = N_layers * end_node_idx + nbr_left_idx;
-                    ang_difference = node_theta_layers[N_layers * end_node_idx + end_layer_idx] - node_theta_layers[N_layers * end_node_idx + nbr_left_idx];
-                    if (ang_difference >  M_PI) {
-                        ang_difference -= 2 * M_PI;
-                    }
-                    if (ang_difference < -M_PI) {
-                        ang_difference += 2 * M_PI;
-                    }
+                    ang_difference = dif_angle1(node_theta_layers[N_layers * end_node_idx + end_layer_idx], node_theta_layers[N_layers * end_node_idx + nbr_left_idx]);
                     node_ad_list_layered[N_layers * end_node_idx + end_layer_idx][conn_idx] = Rotation_Weight * fabs(ang_difference);
                 }
                 // if there is more than 2 layers -> connect to the other neighbor node
                 if (num_layers > 2) {
                     node_conn_layered[N_layers * end_node_idx + end_layer_idx][conn_idx + 1] = N_layers * end_node_idx + nbr_right_idx;
-                    ang_difference = node_theta_layers[N_layers * end_node_idx + end_layer_idx] - node_theta_layers[N_layers * end_node_idx + nbr_right_idx];
-                    if (ang_difference >  M_PI) {
-                        ang_difference -= 2 * M_PI;
-                    }
-                    if (ang_difference < -M_PI) {
-                        ang_difference += 2 * M_PI;
-                    }
+                    ang_difference = dif_angle1(node_theta_layers[N_layers * end_node_idx + end_layer_idx], node_theta_layers[N_layers * end_node_idx + nbr_right_idx]);
                     node_ad_list_layered[N_layers * end_node_idx + end_layer_idx][conn_idx + 1] = Rotation_Weight * fabs(ang_difference);
                 }
 
