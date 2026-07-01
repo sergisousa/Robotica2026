@@ -103,8 +103,18 @@ int array_has_element(int arr[], int size, int element) {
     return 0; // Element not found
 }
 
+// function to fill array with a certain value
+void fill_array(int array[], int value, int size) {
+    for (int i = 0; i < size; i++) {
+        array[i] = value;
+    }
+}
+
 // function to fill initial node and its connections to the 3 closest nodes
 void initial_node(float coords[2]){
+    // empty initial node connections
+    fill_array(node_conn[N_nodes], -1, MAX_connections);
+
     // fill coordinates of initial node
     node_coords[N_nodes][0] = coords[0];
     node_coords[N_nodes][1] = coords[1];
