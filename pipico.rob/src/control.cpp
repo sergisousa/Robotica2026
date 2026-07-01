@@ -70,6 +70,7 @@ class main_fsm_t: public state_machine_t
       } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
         if (action.blocked_node) {
           set_next_state(as_backwards_walk);
+          action.blocked_node = false;
         } else {
           set_next_state(as_follow_line);
         }
