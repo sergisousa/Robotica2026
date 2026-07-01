@@ -64,7 +64,7 @@ class main_fsm_t: public state_machine_t
     if (state == 300 && actions_count >= 1){
       set_next_state(301);
 
-    } else if (state == 11 && action.next_step == true){
+    } else if (state == as_opt_trajectory && action.next_step == true){
       if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh){
         set_next_state(as_set_theta);
       } else if (dif_angle(action.thetai, action.thetaf) < action.e_theta_tresh){
@@ -77,13 +77,13 @@ class main_fsm_t: public state_machine_t
         set_next_state(as_set_theta); // first iteration only
       }
 
-    } else if (state == 3 && action.done && action.robotatfactory){
-      set_next_state(11);
+    } else if (state == as_follow_line && action.done && action.robotatfactory){
+      set_next_state(as_opt_trajectory);
 
-    } else if (state == 1 && action.done && action.robotatfactory){
-      set_next_state(11);
+    } else if (state == as_set_theta && action.done && action.robotatfactory){
+      set_next_state(as_opt_trajectory);
 
-    } else if (state == 11 && action.done == true){
+    } else if (state == as_opt_trajectory && action.done == true){
       set_next_state(200);
     }
   };

@@ -198,9 +198,6 @@ void action_t::follow_line(void)
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
-    if (robotatfactory){
-      robot.pfsm->force_state(11);
-    }
   }
 }
 
@@ -250,6 +247,39 @@ void action_t::follow_circle(void)
   float err_2 = acos((uCfx * uCrx + uCfy * uCry)/(r * sqrt(sqr(uCrx) + sqr(uCry))));
 
   if (abs(err_2) < e_theta_tresh){
+    done = true;
+    robot.v_req = 0;
+    robot.w_req = 0;
+  }
+}
+
+void action_t::backwards_walk(void)
+{
+  e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
+
+  // theta error
+  thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe) + M_PI; // backwards angle
+  e_theta = dif_angle(thetaf, robot.thetae);
+
+  // distance error
+  float uifx = Pf.x - Pi.x;
+  float uify = Pf.y - Pi.y;
+
+  float vifx = uifx/sqrt(sqr(uifx) + sqr(uify));
+  float vify = uify/sqrt(sqr(uifx) + sqr(uify));
+
+  float uirx = robot.xe - Pi.x;
+  float uiry = robot.ye - Pi.y;
+
+  float e_n = vifx * uiry - vify * uirx;
+
+  // finally
+  robot.w_req = ktheta * e_theta + kn * e_n;
+  robot.v_req = -v_nom * top_hat_squared(robot.w_req, w0); // backwards velocity
+  
+  if (e_xy < e_xy_tresh)
+  {
+    next_step = false;
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
@@ -401,42 +431,6 @@ void action_t::opt_trajectory(void)
     robotatfactory = 0;
     traj_done = 0;
     done = true;
-  }
-}
-
-void action_t::backwards_walk(void)
-{
-  e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
-
-  // theta error
-  thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe) + M_PI; // backwards angle
-  e_theta = dif_angle(thetaf, robot.thetae);
-
-  // distance error
-  float uifx = Pf.x - Pi.x;
-  float uify = Pf.y - Pi.y;
-
-  float vifx = uifx/sqrt(sqr(uifx) + sqr(uify));
-  float vify = uify/sqrt(sqr(uifx) + sqr(uify));
-
-  float uirx = robot.xe - Pi.x;
-  float uiry = robot.ye - Pi.y;
-
-  float e_n = vifx * uiry - vify * uirx;
-
-  // finally
-  robot.w_req = ktheta * e_theta + kn * e_n;
-  robot.v_req = -v_nom * top_hat_squared(robot.w_req, w0); // backwards velocity
-  
-  if (e_xy < e_xy_tresh)
-  {
-    next_step = false;
-    done = true;
-    robot.v_req = 0;
-    robot.w_req = 0;
-    if (robotatfactory){
-      robot.pfsm->force_state(11);
-    }
   }
 }
 

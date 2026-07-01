@@ -40,14 +40,14 @@ enum action_state_t {
   as_goto_xy, // 2
   as_follow_line, // 3
   as_follow_circle, // 4
+  as_backwards_walk, // 5
   as_follow_track,
-  as_gollow_track_digital,
+  as_follow_track_digital,
   as_follow_track_left,
   as_follow_track_right,
   as_follow_wall_right,
   as_follow_wall_left,
-  as_opt_trajectory, // 11
-  as_backwards_walk // 12
+  as_opt_trajectory, // 12
 };
 
 class action_t
@@ -89,6 +89,7 @@ class action_t
     void goto_xy(void);
     void follow_line(void);
     void follow_circle(void);
+    void backwards_walk(void);
     void follow_track(void);
     void follow_track_digital(void);
 
@@ -97,11 +98,10 @@ class action_t
     void follow_wall_right(void);
     void follow_wall_left(void);
 
-    void do_action_list(void);
-    void do_action(void);
-
     void opt_trajectory(void);
-    void backwards_walk(void);
+
+    void do_action_list(void);
+    void do_action(void);    
 
     void update_mean_abs_w(void);
 };
