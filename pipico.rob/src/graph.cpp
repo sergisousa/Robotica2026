@@ -3,6 +3,7 @@
 #include <cfloat>
 
 float Rotation_Weight = 1.0;
+float node_thresh = 0.03;
 
 int blocked_nodes[N_blocked];
 
@@ -118,15 +119,20 @@ void initial_node(float coords[2]){
     int sort_idx[N_nodes];
     int conn_idx = 0;
     selection_sort(N_nodes, sort_idx, node_distances);
-    for (int i = 0; i < N_nodes; i++){
-        if (array_has_element(blocked_nodes, N_blocked, sort_idx[i]) == 0){
-            node_conn[N_nodes][conn_idx] = sort_idx[i];
-            conn_idx += 1;
+
+    if (array_has_element(blocked_nodes, N_blocked, sort_idx[0]) && opt_cost_to_go(node_coords[sort_idx[0]], coords) < node_thresh){
+        node_conn[N_nodes][conn_idx] = sort_idx[0];
+    } else {
+        for (int i = 0; i < N_nodes; i++){
+            if (array_has_element(blocked_nodes, N_blocked, sort_idx[i]) == 0){
+                node_conn[N_nodes][conn_idx] = sort_idx[i];
+                conn_idx += 1;
+            }
+            if (conn_idx == MAX_connections_layer){
+                break;
+            }
         }
-        if (conn_idx == MAX_connections_layer){
-            break;
-        }
-    }
+    }    
 }
 
 
