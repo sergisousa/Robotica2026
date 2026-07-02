@@ -252,7 +252,7 @@ void action_t::backwards_walk(void)
   e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
 
   // theta error
-  thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe) + M_PI; // backwards angle
+  thetaf = normalize_angle(atan2(Pf.y - robot.ye, Pf.x - robot.xe) + M_PI); // backwards angle
   e_theta = dif_angle(thetaf, robot.thetae);
 
   // distance error
