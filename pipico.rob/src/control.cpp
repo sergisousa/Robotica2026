@@ -89,23 +89,6 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_backwards_walk && action.done == true && action.robotatfactory){
       set_next_state(as_opt_trajectory);
 
-    } else if (state == as_opt_trajectory && action.done == true){
-      set_next_state(200);
-
-    } else if (state == as_backwards_walk && action.done == true && !action.robotatfactory){
-      set_next_state(200);
-
-    } else if (state == as_follow_line && action.done == true && !action.robotatfactory){
-      set_next_state(200);
-
-    } else if (state == as_set_theta && action.done == true && !action.robotatfactory){
-      set_next_state(200);
-
-    } else if (state == as_goto_xy && action.done == true && !action.robotatfactory){
-      set_next_state(200);
-
-    } else if (state == as_follow_circle && action.done == true && !action.robotatfactory){
-      set_next_state(200);
     }
   };
 
