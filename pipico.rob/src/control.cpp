@@ -67,10 +67,12 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_opt_trajectory && action.next_step == true){
       if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh){
         set_next_state(as_set_theta);
+
       } else if (fabs(dif_angle(action.thetai, action.thetaf)) < action.e_theta_tresh){
         if (action.blocked_node) {
           set_next_state(as_backwards_walk);
           action.blocked_node = false;
+          
         } else {
           set_next_state(as_follow_line);
         }

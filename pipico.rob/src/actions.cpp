@@ -420,7 +420,7 @@ void action_t::opt_trajectory(void)
       
       Pf.x = node_coords[path[idx_path + 1]/N_layers][0];
       Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
-      thetaf = node_theta_layers[path[idx_path]];
+      thetaf = node_theta_layers[path[idx_path + 1]];
       
     }
 
