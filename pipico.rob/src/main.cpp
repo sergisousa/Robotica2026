@@ -1100,6 +1100,7 @@ void loop()
       serial_commands.send_command("rwr", robot.w_req);
       serial_commands.send_command("pth", action.path[action.idx_path]);
       serial_commands.send_command("idx_path", action.idx_path);
+      serial_commands.send_command("blockednode", action.blocked_node);
 
       serial_commands.send_command("xa", aruco_robot_state.position.x);
       serial_commands.send_command("ya", aruco_robot_state.position.y);
