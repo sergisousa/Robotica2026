@@ -446,6 +446,7 @@ void action_t::robot_at_factory(void)
   } else {
     done = true;
     global_path_idx = 0;
+    robotatfactory1 = 0;
   }
 }
 

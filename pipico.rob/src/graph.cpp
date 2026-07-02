@@ -367,8 +367,9 @@ void generate_graph_with_layers(float robot_theta) {
     }
     // if all layers are occupied -> idx_last_layer = -2
     if (idx_last_layer == -2) {
-        idx_last_layer = N_layers;
+        idx_last_layer = N_layers - 1;
     }
+    idx_last_layer += 1;
 
     // if idx_last_layer = -1 it means this node has no layers (and no connections), so we ignore it
     if (idx_last_layer != -1) {
