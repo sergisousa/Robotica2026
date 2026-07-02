@@ -407,7 +407,7 @@ void action_t::opt_trajectory(void)
     Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
     thetaf = node_theta_layers[path[idx_path + 1]];
 
-    if (array_has_element(blocked_nodes, N_blocked, path[idx_path]/N_layers)) {
+    if (array_has_element(blocked_nodes, N_blocked, path[idx_path + 1]/N_layers)) {
       blocked_node = true;
       robot.solenoid_u = 7.0;
     }
