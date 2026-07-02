@@ -210,7 +210,7 @@ void action_t::follow_circle(void)
   float r = dist(Pi.x, Pi.y, C.x, C.y);
   float d = dist(robot.xe, robot.ye, C.x,  C.y);
 
-  float e_n  = r - d;
+  float e_n  = d - r;
 
   //theta error
   float uCrx = robot.xe - C.x;
