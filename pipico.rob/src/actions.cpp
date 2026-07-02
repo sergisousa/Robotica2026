@@ -371,7 +371,6 @@ void action_t::opt_trajectory(void)
   Serial.println("  Entrou no opt trajectory  ");
   Serial.println("");
   if (!traj_done) {
-    done = false;
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
     initial_node(current_pos);
