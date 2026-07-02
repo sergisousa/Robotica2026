@@ -48,6 +48,7 @@ enum action_state_t {
   as_follow_wall_right,
   as_follow_wall_left,
   as_opt_trajectory, // 12
+  as_robot_at_factory, // 13
 };
 
 class action_t
@@ -72,15 +73,19 @@ class action_t
     float wall_dist_right_ref;
 
     int path[(N_nodes + 1) * N_layers + 1];
+    int global_path[8] = {3, 120, 126, 9, 33, 54, 134, 93};
     int idx_path = 0;
+    int global_path_idx = 0;
     int goal_node = 5;
 
     bool done;
     bool stop_at_end;
     bool robotatfactory;
+    bool robotatfactory1;
     bool traj_done;
     bool next_step;
     bool blocked_node;
+    bool next_node;
 
     action_t();
 
@@ -97,6 +102,7 @@ class action_t
     void follow_track_left(void);
     void follow_wall_right(void);
     void follow_wall_left(void);
+    void robot_at_factory(void);
 
     void opt_trajectory(void);
 

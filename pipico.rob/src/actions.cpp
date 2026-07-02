@@ -434,6 +434,21 @@ void action_t::opt_trajectory(void)
   }
 }
 
+void action_t::robot_at_factory(void)
+{
+  robotatfactory1 = 1;
+  done = false;
+  next_node = false;
+  if (global_path_idx < 7) {
+    goal_node = global_path[global_path_idx + 1];
+    global_path_idx += 1;
+    next_node = true;
+  } else {
+    done = true;
+    global_path_idx = 0;
+  }
+}
+
 void action_t::do_action_list(void)
 {
   robot.w_req = 0;

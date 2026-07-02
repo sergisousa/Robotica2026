@@ -89,6 +89,11 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_backwards_walk && action.done == true && action.robotatfactory){
       set_next_state(as_opt_trajectory);
 
+    } else if (state == as_opt_trajectory && action.done == true && action.robotatfactory1){
+      set_next_state(as_robot_at_factory);
+
+    } else if (state == as_robot_at_factory && action.next_node == true){
+      set_next_state(as_opt_trajectory);
     }
   };
 
@@ -129,6 +134,9 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_backwards_walk) { // action backwards_walk
       // robot.solenoid_u = 4.0;
       action.backwards_walk();
+    
+    } else if (state == as_robot_at_factory){
+      action.robot_at_factory();
     
     } else if (state == 100) {  // Another way to stop the robot
       robot.control_mode = cm_kinematics;
