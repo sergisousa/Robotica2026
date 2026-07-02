@@ -210,7 +210,7 @@ void action_t::follow_circle(void)
   float r = dist(Pi.x, Pi.y, C.x, C.y);
   float d = dist(robot.xe, robot.ye, C.x,  C.y);
 
-  float e_n  = r - d;
+  float e_n  = d - r;
 
   //theta error
   float uCrx = robot.xe - C.x;
@@ -420,7 +420,7 @@ void action_t::opt_trajectory(void)
       
       Pf.x = node_coords[path[idx_path + 1]/N_layers][0];
       Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
-      thetaf = node_theta_layers[path[idx_path + 1]]; // será isto?
+      thetaf = node_theta_layers[path[idx_path + 1]];
       
     }
 
