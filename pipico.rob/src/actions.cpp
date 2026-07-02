@@ -136,9 +136,6 @@ void action_t::set_theta(void)
     next_step = false;
     done = true;
     robot.w_req = 0;
-    if (robotatfactory){
-      robot.pfsm->force_state(12);
-    }
     return;
   }
 
@@ -161,9 +158,6 @@ void action_t::goto_xy(void)
     done = true;
     robot.v_req = 0;
     robot.w_req = 0;
-    if (robotatfactory){
-      robot.pfsm->force_state(12);
-    }
   }
 }
 
