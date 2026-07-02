@@ -71,7 +71,6 @@ class main_fsm_t: public state_machine_t
       } else if (fabs(dif_angle(action.thetai, action.thetaf)) < action.e_theta_tresh){
         if (action.blocked_node) {
           set_next_state(as_backwards_walk);
-          action.blocked_node = false;
           
         } else {
           set_next_state(as_follow_line);
@@ -85,6 +84,9 @@ class main_fsm_t: public state_machine_t
 
     } else if (state == as_set_theta && action.done && action.robotatfactory){
       set_next_state(as_opt_trajectory);
+
+    } else if (state == as_opt_trajectory && action.done){
+      set_next_state(200);
 
     } else if (state == as_backwards_walk && action.done == true && action.robotatfactory){
       set_next_state(as_opt_trajectory);

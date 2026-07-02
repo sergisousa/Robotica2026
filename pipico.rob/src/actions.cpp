@@ -275,6 +275,7 @@ void action_t::backwards_walk(void)
   {
     next_step = false;
     done = true;
+    blocked_node = 0;
     robot.v_req = 0;
     robot.w_req = 0;
   }
@@ -395,13 +396,13 @@ void action_t::opt_trajectory(void)
     Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
     thetaf = node_theta_layers[path[idx_path + 1]];
 
-    if (array_has_element(blocked_nodes, N_blocked, path[idx_path + 1]/N_layers) && (idx_path == 0)) {
+    if ((array_has_element(blocked_nodes, N_blocked, path[idx_path + 2]/N_layers)) && (idx_path == 0)) {
       blocked_node = true;
       // robot.solenoid_u = 7.0;
     }
 
     if (blocked_node) {
-      idx_path += 1;
+      idx_path += 3;
       Pi.x = robot.xe;
       Pi.y = robot.ye;
       thetai = robot.thetae;
