@@ -135,7 +135,7 @@ class main_fsm_t: public state_machine_t
       // robot.solenoid_u = 4.0;
       action.backwards_walk();
     
-    } else if (state == as_robot_at_factory){
+    } else if (state == as_robot_at_factory){ // action robot_at_factory
       action.robot_at_factory();
     
     } else if (state == 100) {  // Another way to stop the robot
