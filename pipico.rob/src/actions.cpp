@@ -367,9 +367,6 @@ void action_t::opt_trajectory(void)
   next_step = false;
   done = false;
 
-  Serial.println("");
-  Serial.println("  Entrou no opt trajectory  ");
-  Serial.println("");
   if (!traj_done) {
     idx_path = 0;
     float current_pos[2] = {robot.xe, robot.ye};
@@ -380,13 +377,11 @@ void action_t::opt_trajectory(void)
       for (int i = 0; i < ((N_nodes + 1) * N_layers + 1); i++) {
         path[i] = -1;
       }
+
     } else {
       a_star(start_node, goal_node, path);
     }
     traj_done = 1;
-    Serial.println("");
-    Serial.println("  Calculou a trajetória  ");
-    Serial.println("");
     for (int i = 0; i <= idx_path; i++) {
       Serial.print("  Node: ");
       Serial.println(path[i]);
@@ -420,6 +415,7 @@ void action_t::opt_trajectory(void)
     idx_path += 1;
     next_step = true;
     done = false;
+    
   } else {
     robotatfactory = 0;
     traj_done = 0;
