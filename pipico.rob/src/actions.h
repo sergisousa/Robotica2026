@@ -112,16 +112,6 @@ class action_t
     void update_mean_abs_w(void);
 };
 
-
-float sqr(float x);
-float sign(float x);
-float norm(float x, float y);
-void normalize(float& x, float& y);
-
-float dist(float x0, float y0, float x1, float y1);
-float normalize_angle(float ang);
-float dif_angle(float a0, float a1);
-
 extern action_t action;
 
 class segment_t{

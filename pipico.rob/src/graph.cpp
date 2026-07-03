@@ -74,6 +74,63 @@ float node_ad_list_layered[N_layers * (N_nodes + 1) + 1][MAX_connections_layer];
 // store the direction of each node in each layer
 float node_theta_layers[(N_nodes + 1) * N_layers + 1];
 
+float sqr(float x)
+{
+  return x * x;
+}
+
+float sign(float x)
+{
+  if (x > 0) return 1;
+  else if (x < 0) return -1;
+  else return 0;
+}
+
+float norm(float x, float y)
+{
+  return sqrt(x * x + y * y);
+}
+
+void normalize(float& x, float& y)
+{
+  float norm = sqrt(x * x + y * y);
+  if (norm == 0) return;
+  x = x / norm;
+  y = y / norm;
+}
+
+
+float dist(float x0, float y0, float x1, float y1)
+{
+  return sqrt(sqr(x1 - x0) + sqr(y1 - y0));
+}
+
+float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]) {
+    float dist_x = node_coord[0] - stop_node_coord[0];
+    float dist_y = node_coord[1] - stop_node_coord[1];
+    return sqrt(dist_x * dist_x + dist_y * dist_y);
+}
+
+// Normalize angle to the range of [-π, π]
+float normalize_angle(float angle)
+{
+  if (fabs(angle) < M_PI)
+    return angle;
+
+  if (angle >= 0) {
+    angle = fmod(angle + PI, TWO_PI);
+    return angle - PI;
+  } else {
+    angle = fmod(-angle + PI, TWO_PI);
+    return -(angle - PI);
+  }
+}
+
+float dif_angle(float a0, float a1)
+{
+  return normalize_angle(normalize_angle(a0) - normalize_angle(a1));
+}
+
 // function to fill blocked_nodes
 void fill_blocked_nodes(){
     int idx = 0;
@@ -131,7 +188,8 @@ void initial_node(float coords[2]){
     selection_sort(N_nodes, sort_idx, node_distances);
 
     if (array_has_element(blocked_nodes, N_blocked, sort_idx[0]) && opt_cost_to_go(node_coords[sort_idx[0]], coords) < node_thresh){
-        node_conn[N_nodes][conn_idx] = sort_idx[0];
+        // if we are approximately @ blocked node
+        node_conn[N_nodes][conn_idx] = node_conn[sort_idx[0]][0];
     } else {
         for (int i = 0; i < N_nodes; i++){
             if (array_has_element(blocked_nodes, N_blocked, sort_idx[i]) == 0){
@@ -179,7 +237,7 @@ void generate_graph_with_layers(float robot_theta) {
                 // check if the current node already has a layer with the same orientation
                 already_has_layer = false;
                 for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the current node's layer in layered graph
-                    if (fabs(dif_angle1(node_theta_layers[N_layers * curr_idx + layer_idx], theta)) < theta_thresh) {
+                    if (fabs(dif_angle(node_theta_layers[N_layers * curr_idx + layer_idx], theta)) < theta_thresh) {
                         // store current node's layer
                         curr_layer_idx = layer_idx;
                         already_has_layer = true;
@@ -206,7 +264,7 @@ void generate_graph_with_layers(float robot_theta) {
                 // check if the neighbor node already has a layer with the same orientation
                 already_has_layer = false;
                 for (int layer_idx = 0; layer_idx < N_layers; layer_idx++) { // layer_idx -> index of the neighbor node's layer in layered graph
-                    if (fabs(dif_angle1(node_theta_layers[N_layers * nbr_idx + layer_idx], theta)) < theta_thresh) {
+                    if (fabs(dif_angle(node_theta_layers[N_layers * nbr_idx + layer_idx], theta)) < theta_thresh) {
                         // check for an empty connection slot, and apply connection from current new node to neighbor's new node
                         for (int conn_layer_idx = 0; conn_layer_idx < MAX_connections_layer; conn_layer_idx++) { // conn_layer_idx -> index of connection of current node in layered graph
                             if (node_conn_layered[N_layers * curr_idx + curr_layer_idx][conn_layer_idx] == -1) {
@@ -332,13 +390,13 @@ void generate_graph_with_layers(float robot_theta) {
                         // if there is more than 1 layer -> connect to the neighbor node
                         if (num_layers > 1) {
                             node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx] = N_layers * curr_idx + nbr_left_idx;
-                            ang_difference = dif_angle1(node_theta_layers[N_layers * curr_idx + layer_idx], node_theta_layers[N_layers * curr_idx + nbr_left_idx]);
+                            ang_difference = dif_angle(node_theta_layers[N_layers * curr_idx + layer_idx], node_theta_layers[N_layers * curr_idx + nbr_left_idx]);
                             node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx] = Rotation_Weight * fabs(ang_difference);
                         }
                         // if there is more than 2 layers -> connect to the other neighbor node
                         if (num_layers > 2) {
                             node_conn_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = N_layers * curr_idx + nbr_right_idx;
-                            ang_difference = dif_angle1(node_theta_layers[N_layers * curr_idx + layer_idx], node_theta_layers[N_layers * curr_idx + nbr_right_idx]);
+                            ang_difference = dif_angle(node_theta_layers[N_layers * curr_idx + layer_idx], node_theta_layers[N_layers * curr_idx + nbr_right_idx]);
                             node_ad_list_layered[N_layers * curr_idx + layer_idx][conn_idx + 1] = Rotation_Weight * fabs(ang_difference);
                         }
 
@@ -403,13 +461,13 @@ void generate_graph_with_layers(float robot_theta) {
                 // if there is more than 1 layer -> connect to the neighbor node
                 if (num_layers > 1) {
                     node_conn_layered[N_layers * end_node_idx + end_layer_idx][conn_idx] = N_layers * end_node_idx + nbr_left_idx;
-                    ang_difference = dif_angle1(node_theta_layers[N_layers * end_node_idx + end_layer_idx], node_theta_layers[N_layers * end_node_idx + nbr_left_idx]);
+                    ang_difference = dif_angle(node_theta_layers[N_layers * end_node_idx + end_layer_idx], node_theta_layers[N_layers * end_node_idx + nbr_left_idx]);
                     node_ad_list_layered[N_layers * end_node_idx + end_layer_idx][conn_idx] = Rotation_Weight * fabs(ang_difference);
                 }
                 // if there is more than 2 layers -> connect to the other neighbor node
                 if (num_layers > 2) {
                     node_conn_layered[N_layers * end_node_idx + end_layer_idx][conn_idx + 1] = N_layers * end_node_idx + nbr_right_idx;
-                    ang_difference = dif_angle1(node_theta_layers[N_layers * end_node_idx + end_layer_idx], node_theta_layers[N_layers * end_node_idx + nbr_right_idx]);
+                    ang_difference = dif_angle(node_theta_layers[N_layers * end_node_idx + end_layer_idx], node_theta_layers[N_layers * end_node_idx + nbr_right_idx]);
                     node_ad_list_layered[N_layers * end_node_idx + end_layer_idx][conn_idx + 1] = Rotation_Weight * fabs(ang_difference);
                 }
 
@@ -445,30 +503,7 @@ void selection_sort(const int size, int idx[], float array[]) {
     }
 }
 
-float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]) {
-    float dist_x = node_coord[0] - stop_node_coord[0];
-    float dist_y = node_coord[1] - stop_node_coord[1];
-    return sqrt(dist_x * dist_x + dist_y * dist_y);
-}
 
-float normalize_angle1(float angle)
-{
-  if (fabs(angle) < M_PI)
-    return angle;
-
-  if (angle >= 0) {
-    angle = fmod(angle + PI, TWO_PI);
-    return angle - PI;
-  } else {
-    angle = fmod(-angle + PI, TWO_PI);
-    return -(angle - PI);
-  }
-}
-
-float dif_angle1(float a0, float a1)
-{
-  return normalize_angle1(normalize_angle1(a0) - normalize_angle1(a1));
-}
 
 int is_array_zero(const int size, const int array[]) {
     int result = 1;

@@ -32,58 +32,6 @@
 
 action_t action;
 
-
-float sqr(float x)
-{
-  return x * x;
-}
-
-float sign(float x)
-{
-  if (x > 0) return 1;
-  else if (x < 0) return -1;
-  else return 0;
-}
-
-float norm(float x, float y)
-{
-  return sqrt(x * x + y * y);
-}
-
-void normalize(float& x, float& y)
-{
-  float norm = sqrt(x * x + y * y);
-  if (norm == 0) return;
-  x = x / norm;
-  y = y / norm;
-}
-
-
-float dist(float x0, float y0, float x1, float y1)
-{
-  return sqrt(sqr(x1 - x0) + sqr(y1 - y0));
-}
-
-// Normalize angle to the range of [-π, π]
-float normalize_angle(float angle)
-{
-  if (fabs(angle) < M_PI)
-    return angle;
-
-  if (angle >= 0) {
-    angle = fmod(angle + PI, TWO_PI);
-    return angle - PI;
-  } else {
-    angle = fmod(-angle + PI, TWO_PI);
-    return -(angle - PI);
-  }
-}
-
-float dif_angle(float a0, float a1)
-{
-  return normalize_angle(normalize_angle(a0) - normalize_angle(a1));
-}
-
 float top_hat_squared(float w, float wz)
 {
    float v = -(w - wz) * (w + wz) / sqr(wz);
@@ -92,6 +40,15 @@ float top_hat_squared(float w, float wz)
    return v;
 }
 
+int near_blocked_node(float x, float y, float node_thresh)
+{
+  for (int i = 0; i < N_blocked; i++) {
+    if (dist(node_coords[blocked_nodes[i]][0], node_coords[blocked_nodes[i]][1], x, y) < node_thresh) {
+      return 1;
+    }
+  }
+  return 0;
+}
 
 action_t::action_t()
 {
@@ -396,13 +353,12 @@ void action_t::opt_trajectory(void)
     Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
     thetaf = node_theta_layers[path[idx_path + 1]];
 
-    if ((array_has_element(blocked_nodes, N_blocked, path[idx_path + 2]/N_layers)) && (idx_path == 0)) {
+    if ((idx_path == 0) && (near_blocked_node(robot.xe, robot.ye, e_xy_tresh))) {
       blocked_node = true;
       // robot.solenoid_u = 7.0;
     }
 
     if (blocked_node) {
-      idx_path += 3;
       Pi.x = robot.xe;
       Pi.y = robot.ye;
       thetai = robot.thetae;

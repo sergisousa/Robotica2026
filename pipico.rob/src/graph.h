@@ -18,17 +18,23 @@ extern int node_conn_layered[N_layers * (N_nodes + 1) + 1][MAX_connections_layer
 extern float node_ad_list_layered[N_layers * (N_nodes + 1) + 1][MAX_connections_layer];
 extern float node_theta_layers[(N_nodes + 1) * N_layers + 1];
 
+
+float sqr(float x);
+float sign(float x);
+float norm(float x, float y);
+void normalize(float& x, float& y);
+
+float dist(float x0, float y0, float x1, float y1);
+float normalize_angle(float ang);
+float dif_angle(float a0, float a1);
+float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]);
+
 void fill_blocked_nodes();
 void initial_node(float coords[2]);
-float normalize_angle1(float angle);
-float dif_angle1(float a0, float a1);
 int array_has_element(int arr[], int size, int element);
 void fill_array(int array[], int value, int size);
 void generate_graph_with_layers(float robot_theta);
 int a_star(const int start_idx, const int stop_idx, int final_path[(N_nodes + 1) * N_layers + 1]);
-// void obtain_ad_list(float list[N_nodes][MAX_connections]);
-// int find_nearest_node(float coords[2]);
 void selection_sort(const int size, int idx[], float array[]);
-float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]);
 
 #endif
