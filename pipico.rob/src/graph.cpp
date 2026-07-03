@@ -189,7 +189,13 @@ void initial_node(float coords[2]){
 
     if (array_has_element(blocked_nodes, N_blocked, sort_idx[0]) && opt_cost_to_go(node_coords[sort_idx[0]], coords) < node_thresh){
         // if we are approximately @ blocked node
-        node_conn[N_nodes][conn_idx] = node_conn[sort_idx[0]][0];
+        int node_next_to_blocked = node_conn[sort_idx[0]][0];
+        node_conn[N_nodes][conn_idx] = node_next_to_blocked;
+        for (int i = 0; i < MAX_connections; i++) {
+            if (node_conn[node_next_to_blocked][i] == -1) {
+                node_conn[node_next_to_blocked][i] = N_nodes;
+            }
+        }
     } else {
         for (int i = 0; i < N_nodes; i++){
             if (array_has_element(blocked_nodes, N_blocked, sort_idx[i]) == 0){
@@ -203,6 +209,16 @@ void initial_node(float coords[2]){
     }    
 }
 
+// function to check if we are near a blocked node
+int near_blocked_node(float x, float y, float node_thresh)
+{
+  for (int i = 0; i < N_blocked; i++) {
+    if (dist(node_coords[blocked_nodes[i]][0], node_coords[blocked_nodes[i]][1], x, y) < node_thresh) {
+      return 1;
+    }
+  }
+  return 0;
+}
 
 // function to generate layered graph from not-layered graph
 void generate_graph_with_layers(float robot_theta) {
@@ -230,7 +246,7 @@ void generate_graph_with_layers(float robot_theta) {
             nbr_idx = node_conn[curr_idx][con_idx];
             
             // if a connection exists, and the node is not blocked
-            if (nbr_idx != -1 && !array_has_element(blocked_nodes, 8, curr_idx)) {
+            if (nbr_idx != -1 && !array_has_element(blocked_nodes, 8, curr_idx) && !near_blocked_node(node_coords[curr_idx][0], node_coords[curr_idx][1], 0.03)) {
                 // calculate the angle of the connection
                 theta = atan2(node_coords[nbr_idx][1] - node_coords[curr_idx][1], node_coords[nbr_idx][0] - node_coords[curr_idx][0]); // returns angle in range pi to -pi
 
@@ -259,7 +275,7 @@ void generate_graph_with_layers(float robot_theta) {
                 }
 
                 // check if neighbor is a blocked node
-                nbr_is_blocked = array_has_element(blocked_nodes, 8, nbr_idx);
+                nbr_is_blocked = (array_has_element(blocked_nodes, 8, nbr_idx) || near_blocked_node(node_coords[nbr_idx][0], node_coords[nbr_idx][1], 0.03));
                 
                 // check if the neighbor node already has a layer with the same orientation
                 already_has_layer = false;
@@ -429,8 +445,7 @@ void generate_graph_with_layers(float robot_theta) {
     }
     idx_last_layer += 1;
 
-    // if idx_last_layer = -1 it means this node has no layers (and no connections), so we ignore it
-    if (idx_last_layer != -1) {
+    if (idx_last_layer != -1) { // if idx_last_layer = -1 it means this node has no layers (and no connections), so we ignore it
         num_layers = idx_last_layer + 1; // number of occupied layers in this node
         // sort layers by order of orientation
         selection_sort(N_layers + 1, end_sort_idx, end_curr_layer_theta);

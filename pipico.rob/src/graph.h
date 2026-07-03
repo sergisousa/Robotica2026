@@ -30,6 +30,7 @@ float dif_angle(float a0, float a1);
 float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]);
 
 void fill_blocked_nodes();
+int near_blocked_node(float x, float y, float node_thresh);
 void initial_node(float coords[2]);
 int array_has_element(int arr[], int size, int element);
 void fill_array(int array[], int value, int size);

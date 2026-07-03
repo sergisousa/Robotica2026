@@ -40,16 +40,6 @@ float top_hat_squared(float w, float wz)
    return v;
 }
 
-int near_blocked_node(float x, float y, float node_thresh)
-{
-  for (int i = 0; i < N_blocked; i++) {
-    if (dist(node_coords[blocked_nodes[i]][0], node_coords[blocked_nodes[i]][1], x, y) < node_thresh) {
-      return 1;
-    }
-  }
-  return 0;
-}
-
 action_t::action_t()
 {
   Pf.x = 1;
