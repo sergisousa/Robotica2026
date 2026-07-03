@@ -10,30 +10,30 @@ int blocked_nodes[N_blocked];
 // define node connections
 int node_conn[N_nodes + 1][MAX_connections] = {
     // -1 means no connection
-    {20,  2, -1, -1}, // Node 4
-    { 5, 21, -1, -1}, // Node 5
-    { 0,  6,  7, 20}, // Node 6
-    { 6, -1, -1, -1}, // Node 7
-    { 5, -1, -1, -1}, // Node 8
-    { 9,  4, 21,  1}, // Node 9
-    { 2,  3, 10, -1}, // Node 13
-    { 2, -1, -1, -1}, // Node 14
-    { 9, -1, -1, -1}, // Node 15
-    { 5, 22,  8, -1}, // Node 16
-    {12, 11,  6, -1}, // Node 20
-    {10, 12, -1, -1}, // Node 22
-    {10, 11, 13, 16}, // Node 23
-    {12, 14, 17, -1}, // Node 24
-    {13, 15, 22, 18}, // Node 25
-    {14, 22, 19, -1}, // Node 26
-    {12, -1, -1, -1}, // Node 36
-    {13, -1, -1, -1}, // Node 37
-    {14, -1, -1, -1}, // Node 38
-    {15, -1, -1, -1}, // Node 39
-    { 0, 21,  2, -1}, // Node 30
-    {20,  1,  5, -1}, // Node 31
-    { 9, 14, 15, -1},  // Node 35
-    {-1, -1, -1, -1}  // Initial node
+    {20,  2, -1, -1, -1}, // Node 4
+    { 5, 21, -1, -1, -1}, // Node 5
+    { 0,  6,  7, 20, -1}, // Node 6
+    { 6, -1, -1, -1, -1}, // Node 7
+    { 5, -1, -1, -1, -1}, // Node 8
+    { 9,  4, 21,  1, -1}, // Node 9
+    { 2,  3, 10, -1, -1}, // Node 13
+    { 2, -1, -1, -1, -1}, // Node 14
+    { 9, -1, -1, -1, -1}, // Node 15
+    { 5, 22,  8, -1, -1}, // Node 16
+    {12, 11,  6, -1, -1}, // Node 20
+    {10, 12, -1, -1, -1}, // Node 22
+    {10, 11, 13, 16, -1}, // Node 23
+    {12, 14, 17, -1, -1}, // Node 24
+    {13, 15, 22, 18, -1}, // Node 25
+    {14, 22, 19, -1, -1}, // Node 26
+    {12, -1, -1, -1, -1}, // Node 36
+    {13, -1, -1, -1, -1}, // Node 37
+    {14, -1, -1, -1, -1}, // Node 38
+    {15, -1, -1, -1, -1}, // Node 39
+    { 0, 21,  2, -1, -1}, // Node 30
+    {20,  1,  5, -1, -1}, // Node 31
+    { 9, 14, 15, -1, -1},  // Node 35
+    {-1, -1, -1, -1, -1}  // Initial node
 };
 
 // define coordinates {x,y} of each node
@@ -194,6 +194,7 @@ void initial_node(float coords[2]){
         for (int i = 0; i < MAX_connections; i++) {
             if (node_conn[node_next_to_blocked][i] == -1) {
                 node_conn[node_next_to_blocked][i] = N_nodes;
+                break;
             }
         }
     } else {
@@ -218,6 +219,15 @@ int near_blocked_node(float x, float y, float node_thresh)
     }
   }
   return 0;
+}
+
+void clear_near_conn() {
+    int near_idx = node_conn[N_nodes][0];
+    for (int i = 0; i < MAX_connections; i++) {
+        if (node_conn[near_idx][i] == N_nodes) {
+            node_conn[near_idx][i] = -1;
+        }
+    }
 }
 
 // function to generate layered graph from not-layered graph

@@ -4,7 +4,7 @@
 #define N_nodes 23
 #define N_layers 6
 #define N_blocked 8
-#define MAX_connections 4
+#define MAX_connections 5
 #define MAX_connections_layer 3
 
 #define theta_thresh 1e-3
@@ -30,8 +30,9 @@ float dif_angle(float a0, float a1);
 float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]);
 
 void fill_blocked_nodes();
-int near_blocked_node(float x, float y, float node_thresh);
 void initial_node(float coords[2]);
+int near_blocked_node(float x, float y, float node_thresh);
+void clear_near_conn();
 int array_has_element(int arr[], int size, int element);
 void fill_array(int array[], int value, int size);
 void generate_graph_with_layers(float robot_theta);

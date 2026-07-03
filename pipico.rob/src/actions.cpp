@@ -225,6 +225,7 @@ void action_t::backwards_walk(void)
     blocked_node = 0;
     robot.v_req = 0;
     robot.w_req = 0;
+    clear_near_conn();
   }
 }
 
