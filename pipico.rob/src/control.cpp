@@ -67,19 +67,28 @@ class main_fsm_t: public state_machine_t
     if (state == 300 && actions_count >= 1){
       set_next_state(301);
 
+    } else if (state == as_opt_trajectory && action.set_last_theta){
+      set_next_state(as_set_theta);
+      action.set_last_theta = 0;
+      action.done = 0;
+      
     } else if (state == as_opt_trajectory && action.next_step == true){
       if (in_dist) {
         set_next_state(as_set_theta);
+        action.done = 0;
 
       } else if (in_ang) {
         if (action.blocked_node) {
           set_next_state(as_backwards_walk);
+          action.done = 0;
           
         } else {
           set_next_state(as_follow_line);
+          action.done = 0;
         }
       } else {
         set_next_state(as_set_theta); // first iteration only
+        action.done = 0;
       }
 
     } else if (state == as_follow_line && action.done && action.robotatfactory){
@@ -99,6 +108,10 @@ class main_fsm_t: public state_machine_t
 
     } else if (state == as_robot_at_factory && action.next_node == true){
       set_next_state(as_opt_trajectory);
+
+    } else if (state == as_set_theta && action.done){
+      set_next_state(200);
+
     }
   };
 

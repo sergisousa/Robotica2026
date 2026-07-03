@@ -73,7 +73,7 @@ class action_t
     float wall_dist_right_ref;
 
     int path[(N_nodes + 1) * N_layers + 1];
-    int global_path[8] = {3, 120, 126, 9, 33, 54, 134, 93};
+    int global_path[8] = {114, 48, 108, 24, 102, 18, 96, 42};
     int idx_path = 0;
     int global_path_idx = 0;
     int goal_node = 5;
@@ -81,6 +81,7 @@ class action_t
     bool done;
     bool stop_at_end;
     bool robotatfactory;
+    bool set_last_theta;
     bool robotatfactory1;
     bool traj_done;
     bool next_step;

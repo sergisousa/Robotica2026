@@ -364,6 +364,8 @@ void action_t::opt_trajectory(void)
     done = false;
     
   } else {
+    set_last_theta = 1;
+    thetaf = node_theta_layers[path[idx_path]];
     robotatfactory = 0;
     traj_done = 0;
     done = true;
