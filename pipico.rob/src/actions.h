@@ -34,6 +34,8 @@
 #include "graph.h"
 #include <VectorXf.h>
 
+#define N_global 9
+
 enum action_state_t {
   as_stop, // 0
   as_set_theta, // 1
@@ -49,6 +51,7 @@ enum action_state_t {
   as_follow_wall_left,
   as_opt_trajectory, // 12
   as_robot_at_factory, // 13
+  as_switch_solenoid
 };
 
 class action_t
@@ -73,13 +76,15 @@ class action_t
     float wall_dist_right_ref;
 
     int path[(N_nodes + 1) * N_layers + 1];
-    int global_path[8] = {114, 48, 108, 24, 102, 18, 96, 42};
+    int global_path[N_global] = {114, 48, 108, 24, 102, 18, 96, 42, 6};
     int idx_path = 0;
     int global_path_idx = 0;
     int goal_node = 5;
 
     bool done;
     bool stop_at_end;
+    bool all_done = 1;
+    bool hold_box = 0;
     bool robotatfactory;
     bool set_last_theta;
     bool robotatfactory1;
@@ -104,6 +109,7 @@ class action_t
     void follow_wall_right(void);
     void follow_wall_left(void);
     void robot_at_factory(void);
+    void switch_solenoid(void);
 
     void opt_trajectory(void);
 

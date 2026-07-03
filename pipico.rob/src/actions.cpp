@@ -374,18 +374,20 @@ void action_t::opt_trajectory(void)
 
 void action_t::robot_at_factory(void)
 {
-  robotatfactory1 = 1;
-  done = false;
-  next_node = false;
-  if (global_path_idx < 7) {
-    goal_node = global_path[global_path_idx + 1];
-    global_path_idx += 1;
-    next_node = true;
+  all_done = 0;
+  if (global_path_idx < N_global) {
+    goal_node = global_path[global_path_idx];
+    global_path_idx++;
   } else {
-    done = true;
     global_path_idx = 0;
-    robotatfactory1 = 0;
+    hold_box = 0;
+    all_done = 1;
   }
+}
+
+void action_t::switch_solenoid(void)
+{
+  robot.solenoid_u = 5.0 * hold_box;
 }
 
 void action_t::do_action_list(void)

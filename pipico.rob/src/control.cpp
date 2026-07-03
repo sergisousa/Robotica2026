@@ -103,14 +103,24 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_backwards_walk && action.done == true && action.robotatfactory){
       set_next_state(as_opt_trajectory);
 
-    } else if (state == as_opt_trajectory && action.done == true && action.robotatfactory1){
+    } else if (state == as_set_theta && action.done && !action.robotatfactory){
+      if (action.all_done) {
+        set_next_state(200);
+      } else {
+        set_next_state(as_switch_solenoid);
+        action.hold_box = !action.hold_box;
+      }
+
+    } else if (state == as_switch_solenoid && tis >= 1) {
       set_next_state(as_robot_at_factory);
 
-    } else if (state == as_robot_at_factory && action.next_node == true){
-      set_next_state(as_opt_trajectory);
-
-    } else if (state == as_set_theta && action.done){
-      set_next_state(200);
+    } else if (state == as_robot_at_factory) {
+      if (action.all_done){
+        set_next_state(200);
+      } else {
+        set_next_state(as_opt_trajectory);
+      }
+      
 
     }
   };
@@ -155,7 +165,10 @@ class main_fsm_t: public state_machine_t
 
     } else if (state == as_robot_at_factory){ // action robot_at_factory
       action.robot_at_factory();
-    
+
+    } else if (state == as_switch_solenoid) {
+      action.switch_solenoid();
+      
     } else if (state == 100) {  // Another way to stop the robot
       robot.control_mode = cm_kinematics;
       robot.v_req = 0;
