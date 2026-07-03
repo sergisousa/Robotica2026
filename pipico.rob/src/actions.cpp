@@ -115,9 +115,9 @@ action_t::action_t()
   wz = 4;
   w0 = 4;
 
-  kset_theta = 3.0;
-  ktheta = 5.0;
-  kn = -50;
+  kset_theta = 2.0;
+  ktheta = 20.0;
+  kn = -100;
 
   stop_at_end = false;
 }
@@ -410,7 +410,6 @@ void action_t::opt_trajectory(void)
       Pf.x = node_coords[path[idx_path + 1]/N_layers][0];
       Pf.y = node_coords[path[idx_path + 1]/N_layers][1];
       thetaf = node_theta_layers[path[idx_path + 1]];
-      
     }
 
     idx_path += 1;

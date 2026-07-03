@@ -635,8 +635,8 @@ void setup()
 
   // All wheeel PID controllers share the same parameters
   wheel_PID_pars.Kf = 0.0;
-  wheel_PID_pars.Kc = 0.24;
-  wheel_PID_pars.Ki = 2.4;
+  wheel_PID_pars.Kc = 0.142;
+  wheel_PID_pars.Ki = 1.229;
   wheel_PID_pars.Kd = 0;
   wheel_PID_pars.Kfd = 0;
   wheel_PID_pars.dt = control_interval;

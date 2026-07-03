@@ -60,15 +60,18 @@ class main_fsm_t: public state_machine_t
 {
   virtual void next_state_rules(void)\
   {
+    int in_dist = (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh);
+    int in_ang = (fabs(dif_angle(action.thetai, action.thetaf)) < action.e_theta_tresh);
+
     // Rules for the state evolution
     if (state == 300 && actions_count >= 1){
       set_next_state(301);
 
     } else if (state == as_opt_trajectory && action.next_step == true){
-      if (dist(action.Pf.x, action.Pf.y, action.Pi.x, action.Pi.y) < action.e_xy_tresh){
+      if (in_dist) {
         set_next_state(as_set_theta);
 
-      } else if (fabs(dif_angle(action.thetai, action.thetaf)) < action.e_theta_tresh){
+      } else if (in_ang) {
         if (action.blocked_node) {
           set_next_state(as_backwards_walk);
           
