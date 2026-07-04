@@ -129,6 +129,16 @@ class main_fsm_t: public state_machine_t
   virtual void state_actions_rules(void)
   {
     static int last_state;
+    
+    if (state != last_state) {
+      robot.u1 = 0;
+      robot.PID[0].Se = 0;
+      robot.PID[0].y_ref = 0;
+
+      robot.u2 = 0;
+      robot.PID[1].Se = 0;
+      robot.PID[1].y_ref = 0;
+    }
 
  // Actions in each state
     if (state == as_stop) {   // Robot Stoped
