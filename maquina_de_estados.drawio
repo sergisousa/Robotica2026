@@ -1,0 +1,145 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Página-1" id="wmqXs5S5oF1A9AGeIfcW">
+    <mxGraphModel grid="1" page="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="sOanGNP8RaisGQc9Ghki-5" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="sOanGNP8RaisGQc9Ghki-2" value="">
+          <mxGeometry relative="1" x="0.2955" y="33" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="430" y="620" />
+              <mxPoint x="430" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-6" connectable="0" parent="sOanGNP8RaisGQc9Ghki-5" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;div&gt;&lt;/div&gt;&lt;div&gt;next_step&lt;/div&gt;&lt;div&gt;&amp;amp;&amp;amp; !in_dist &amp;amp;&amp;amp; in_ang&lt;/div&gt;&lt;div&gt;&amp;amp;&amp;amp; blocked_node&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="0.056" as="geometry">
+            <mxPoint x="40" y="-4" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-9" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="sOanGNP8RaisGQc9Ghki-4" value="&lt;div&gt;(next_step &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;(in_dist &amp;amp;&amp;amp; !in_ang ||&lt;/div&gt;&lt;div&gt;!in_dist &amp;amp;&amp;amp; !in_ang))&lt;/div&gt;&lt;div&gt;|| set_last_theta&lt;/div&gt;&lt;div&gt;{set_last_theta = 0;}&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.0769" y="60" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="330" y="380" />
+            </Array>
+            <mxPoint x="330" y="270" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CGwwl0PpgXYh2fsiYi8c-3" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" target="CGwwl0PpgXYh2fsiYi8c-1" value="&lt;div&gt;done &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;!next_step&lt;/div&gt;">
+          <mxGeometry relative="1" x="-0.0588" y="-8" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="210" y="478" />
+              <mxPoint x="150" y="478" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;line-height: 90%;&quot;&gt;&lt;div&gt;&lt;div style=&quot;line-height: 110%;&quot;&gt;opt_trajectory&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;{robotatfactory = 1;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;done = 0; next_step = 0;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;if (!traj_done) {traj_done = 1;}&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;else if (path[i+1] == -1) {&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;if (node is blocked) {blocked_node = 1;}&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;next_step = 1; done = 0;}&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;else {robotatfactory = 0;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;traj_done = 0; done = 1;}&lt;/font&gt;&lt;font style=&quot;font-size: 11px; line-height: 90%;&quot;&gt;}&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="280" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-6" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="sOanGNP8RaisGQc9Ghki-1" value="&lt;div&gt;done &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;robotatfactory&lt;/div&gt;">
+          <mxGeometry relative="1" x="0.0667" y="-10" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="500" y="445" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-2" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;line-height: 90%;&quot;&gt;&lt;div style=&quot;line-height: 110%;&quot;&gt;&lt;div style=&quot;line-height: 90%;&quot;&gt;&lt;div&gt;&lt;div&gt;&lt;div style=&quot;line-height: 110%;&quot;&gt;backwards_walk&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;{w_req = ktheta*e_theta + kn*e_n;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;v_req = -v_nom*ths(w_req, w0);&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;if (e_xy &amp;lt; th) {&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;next_step = 0;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;done = 1;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;blocked_node = 0;}}&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="280" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-3" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;line-height: 90%;&quot;&gt;&lt;div style=&quot;line-height: 110%;&quot;&gt;follow_line&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;{next_step = 0&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 90%;&quot;&gt;done = 1}&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="-90" y="630" as="geometry" />
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-10" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="sOanGNP8RaisGQc9Ghki-1" value="&lt;div&gt;done &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;robotatfactory&lt;/div&gt;">
+          <mxGeometry relative="1" x="-0.0769" y="44" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="430" y="315" />
+              <mxPoint x="430" y="315" />
+            </Array>
+            <mxPoint x="440" y="330" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-12" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="DfzaEXpA_ezZBo1QEWgz-11">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-13" connectable="0" parent="DfzaEXpA_ezZBo1QEWgz-12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="&lt;div&gt;done &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;!robotatfactory&lt;/div&gt;&lt;div&gt;&amp;amp;&amp;amp; !all_done&lt;/div&gt;" vertex="1">
+          <mxGeometry relative="1" x="-0.1691" y="2" as="geometry">
+            <mxPoint x="10" y="2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-4" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;line-height: 100%;&quot;&gt;&lt;div&gt;&lt;font style=&quot;line-height: 110%;&quot;&gt;set_theta&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;{v_req = 0;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;if (fabs(e_theta) &amp;lt; th) {&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;next_step = 0; done = 1;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;w_req = 0; return;}&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;w_req = kset_theta*e_theta;}&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="280" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="sOanGNP8RaisGQc9Ghki-11" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;rounded=0;fontColor=light-dark(#000000,#FFFFFF);" value="&lt;div&gt;&lt;span style=&quot;&quot;&gt;in dist =&amp;nbsp;&lt;font style=&quot;font-size: 12px; white-space: pre;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;(&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;dist&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;Pf&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;x&lt;/span&gt;&lt;span style=&quot;&quot;&gt;, &lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;Pf&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;y&lt;/span&gt;&lt;span style=&quot;&quot;&gt;, &lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;Pi&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;x&lt;/span&gt;&lt;span style=&quot;&quot;&gt;, &lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;Pi&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;y&lt;/span&gt;&lt;span style=&quot;&quot;&gt;) &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;e_xy_tresh)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 12px; white-space: pre;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;in_ang =&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt; &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 12px; white-space: pre;&quot;&gt;&lt;span style=&quot;&quot;&gt;fabs&lt;/span&gt;&lt;span style=&quot;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;&quot;&gt;dif_angle&lt;/span&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;(&lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;thetai&lt;/span&gt;&lt;span style=&quot;&quot;&gt;, &lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;thetaf&lt;/span&gt;&lt;span style=&quot;&quot;&gt;)) &lt;/span&gt;&lt;span style=&quot;&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&quot;&quot;&gt; &lt;/span&gt;&lt;span style=&quot;&quot;&gt;action&lt;/span&gt;&lt;span style=&quot;&quot;&gt;.&lt;/span&gt;&lt;span style=&quot;&quot;&gt;e_theta_tresh;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="50" width="470" x="580" y="830" as="geometry" />
+        </mxCell>
+        <mxCell id="CGwwl0PpgXYh2fsiYi8c-4" edge="1" parent="1" source="CGwwl0PpgXYh2fsiYi8c-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="sOanGNP8RaisGQc9Ghki-1" value="ComRobot">
+          <mxGeometry relative="1" x="0.0588" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points" />
+            <mxPoint x="250" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="dVQxOP5p8vivLraPabT5-2" edge="1" parent="1" source="CGwwl0PpgXYh2fsiYi8c-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.25;entryY=1;entryDx=0;entryDy=0;" target="DfzaEXpA_ezZBo1QEWgz-10" value="ComRobot">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-150" y="478" />
+              <mxPoint x="-150" y="790" />
+              <mxPoint x="700" y="790" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="CGwwl0PpgXYh2fsiYi8c-1" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="idle (200)" vertex="1">
+          <mxGeometry height="130" width="200" x="-90" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-7" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-4" style="curved=1;endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="CGwwl0PpgXYh2fsiYi8c-1" value="&lt;div&gt;done &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;!robotatfactory&lt;/div&gt;&lt;div&gt;&amp;amp;&amp;amp; all_done&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <Array as="points">
+              <mxPoint x="120" y="230" />
+            </Array>
+            <mxPoint x="160" y="200" as="sourcePoint" />
+            <mxPoint x="10" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-8" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-3" style="endArrow=classic;html=1;rounded=0;exitX=0.909;exitY=-0.024;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.825;entryDx=0;entryDy=0;entryPerimeter=0;" target="sOanGNP8RaisGQc9Ghki-1" value="&lt;div&gt;done &amp;amp;&amp;amp;&lt;/div&gt;&lt;div&gt;robotatfactory&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" x="-0.0731" y="15" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="120" y="585" as="sourcePoint" />
+            <mxPoint x="170" y="535" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-9" edge="1" parent="1" source="sOanGNP8RaisGQc9Ghki-1" style="endArrow=classic;html=1;rounded=0;exitX=0.113;exitY=1.01;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1.007;entryY=0.206;entryDx=0;entryDy=0;entryPerimeter=0;" target="sOanGNP8RaisGQc9Ghki-3" value="&lt;div&gt;next_step&lt;/div&gt;&lt;div&gt;&amp;amp;&amp;amp; !in_dist &amp;amp;&amp;amp; in_ang&lt;/div&gt;&lt;div&gt;&amp;amp;&amp;amp; !blocked_node&lt;/div&gt;">
+          <mxGeometry height="50" relative="1" width="50" x="-0.0719" y="27" as="geometry">
+            <mxPoint as="offset" />
+            <mxPoint x="440" y="570" as="sourcePoint" />
+            <mxPoint x="490" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-15" edge="1" parent="1" source="DfzaEXpA_ezZBo1QEWgz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="sOanGNP8RaisGQc9Ghki-1" value="!all_done">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-10" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fontColor=light-dark(#000000,#FFFFFF);" value="&lt;div style=&quot;line-height: 100%;&quot;&gt;&lt;div&gt;&lt;font style=&quot;line-height: 100%;&quot;&gt;robot_at_factory&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;{all_done = 0&lt;span style=&quot;white-space: pre;&quot;&gt;;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;if&lt;span style=&quot;&quot;&gt; (&lt;span style=&quot;&quot;&gt;global_path_idx&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;&amp;lt;&lt;span style=&quot;&quot;&gt; N_global&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;) &lt;span style=&quot;&quot;&gt;{&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;goal_node&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;=&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;global_path&lt;span style=&quot;&quot;&gt;[&lt;span style=&quot;&quot;&gt;global_path_idx&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;]; &lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;global_path_idx&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;+=&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;1&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;}&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;else&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;{&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;global_path_idx&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;=&lt;span style=&quot;&quot;&gt; &lt;span style=&quot;&quot;&gt;0;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;all_done = 1&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/font&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%; white-space: pre;&quot;&gt;&lt;span style=&quot;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%; white-space: pre;&quot;&gt;&lt;span style=&quot;&quot;&gt;hold_box = 0;}&lt;/span&gt;&lt;span style=&quot;white-space: normal&quot;&gt;}&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="650" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-16" edge="1" parent="1" source="DfzaEXpA_ezZBo1QEWgz-11" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="DfzaEXpA_ezZBo1QEWgz-10" value="tis &amp;gt;= 1000">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-11" parent="1" style="rounded=1;whiteSpace=wrap;html=1;" value="&lt;div style=&quot;line-height: 100%;&quot;&gt;&lt;div style=&quot;line-height: 110%;&quot;&gt;switch_solenoid&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;{holdbox = !hold_box;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 9px; line-height: 100%;&quot;&gt;solenoid = 5.0 * hold_box;}&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="130" width="200" x="650" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="DfzaEXpA_ezZBo1QEWgz-17" edge="1" parent="1" source="DfzaEXpA_ezZBo1QEWgz-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.25;entryDx=0;entryDy=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" target="CGwwl0PpgXYh2fsiYi8c-1" value="all_done">
+          <mxGeometry relative="1" x="-0.0154" as="geometry">
+            <mxPoint as="offset" />
+            <Array as="points">
+              <mxPoint x="800" y="820" />
+              <mxPoint x="-180" y="820" />
+              <mxPoint x="-180" y="413" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
