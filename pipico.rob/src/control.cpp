@@ -129,15 +129,15 @@ class main_fsm_t: public state_machine_t
   virtual void state_actions_rules(void)
   {
     static int last_state;
-    
-    if (state != last_state) {
-      robot.u1 = 0;
-      robot.PID[0].Se = 0;
-      robot.PID[0].y_ref = 0;
 
-      robot.u2 = 0;
+    if (state != last_state) {
+      // robot.u1 = 0;
+      robot.PID[0].Se = 0;
+      // robot.PID[0].y_ref = 0;
+
+      // robot.u2 = 0;
       robot.PID[1].Se = 0;
-      robot.PID[1].y_ref = 0;
+      // robot.PID[1].y_ref = 0;
     }
 
  // Actions in each state
@@ -173,10 +173,10 @@ class main_fsm_t: public state_machine_t
     } else if (state == as_opt_trajectory) {  // action opt_trajectory
       action.opt_trajectory();
 
-    } else if (state == as_robot_at_factory){ // action robot_at_factory
+    } else if (state == as_robot_at_factory) { // action robot_at_factory
       action.robot_at_factory();
 
-    } else if (state == as_switch_solenoid) {
+    } else if (state == as_switch_solenoid) { // action switch_solenoid 
       action.switch_solenoid();
       
     } else if (state == 100) {  // Another way to stop the robot
