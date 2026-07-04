@@ -83,15 +83,15 @@ class action_t
 
     bool done;
     bool stop_at_end;
-    bool all_done = 1;
-    bool hold_box = 0;
+    
     bool robotatfactory;
-    bool set_last_theta;
-    bool robotatfactory1;
-    bool traj_done;
     bool next_step;
     bool blocked_node;
-    bool next_node;
+    bool set_last_theta;
+    bool traj_done;
+
+    bool hold_box = 0;
+    bool all_done = 1;
 
     action_t();
 
