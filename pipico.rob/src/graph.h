@@ -10,6 +10,8 @@
 #define theta_thresh 1e-3
 
 extern float Rotation_Weight;
+extern float node_thresh;
+extern float dist_to_blocked;
 extern int blocked_nodes[N_blocked];
 extern int node_conn[N_nodes + 1][MAX_connections];
 extern float node_coords[N_nodes + 1][2];
@@ -32,6 +34,7 @@ float opt_cost_to_go(const float node_coord[2], const float stop_node_coord[2]);
 void fill_blocked_nodes();
 void initial_node(float coords[2]);
 int near_blocked_node(float x, float y, float node_thresh);
+void distance_to_nearest_blocked_node(float x, float y, float node_th);
 void clear_near_conn();
 int array_has_element(int arr[], int size, int element);
 void fill_array(int array[], int value, int size);

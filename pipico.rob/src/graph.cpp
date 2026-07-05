@@ -4,6 +4,7 @@
 
 float Rotation_Weight = 1.0;
 float node_thresh = 0.03;
+float dist_to_blocked;
 
 int blocked_nodes[N_blocked];
 
@@ -219,6 +220,19 @@ int near_blocked_node(float x, float y, float node_thresh)
     }
   }
   return 0;
+}
+
+// updates the variable dist_to_blocked to the distance to the nearest blocked node
+void distance_to_nearest_blocked_node(float x, float y, float node_th)
+{
+    float dist_all_blocked[N_blocked];
+    float coords[2] = {x, y};
+    for (int i = 0; i < N_blocked; i++) {
+        dist_all_blocked[i] = opt_cost_to_go(coords, node_coords[blocked_nodes[i]]);
+    }
+    int sort_idx[N_blocked];
+    selection_sort(N_blocked, sort_idx, dist_all_blocked);
+    dist_to_blocked = dist_all_blocked[sort_idx[0]];
 }
 
 void clear_near_conn() {
