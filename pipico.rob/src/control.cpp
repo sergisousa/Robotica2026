@@ -73,24 +73,22 @@ class main_fsm_t: public state_machine_t
       action.done = 0;
       
     } else if (state == as_opt_trajectory && action.next_step == true){
-      if (in_dist) {
+      if (action.blocked_node) {
+        set_next_state(as_backwards_walk);
+        action.done = 0;
+      } else if (in_dist) {
         set_next_state(as_set_theta);
         action.done = 0;
 
       } else if (in_ang) {
-        if (action.blocked_node) {
-          set_next_state(as_backwards_walk);
-          action.done = 0;
-          
-        } else {
-          set_next_state(as_follow_line);
-          action.done = 0;
-        }
+        set_next_state(as_follow_line);
+        action.done = 0;
+
       } else {
         set_next_state(as_set_theta); // first iteration only
         action.done = 0;
-      }
 
+      }
     } else if (state == as_follow_line && action.done && action.robotatfactory){
       set_next_state(as_opt_trajectory);
 
