@@ -608,6 +608,8 @@ void setup()
   pars_list.register_command("cam_rz", &(camera_pars.rot_z));
   pars_list.register_command("goal_node", &(action.goal_node));
   pars_list.register_command("Rotation_Weight", &(Rotation_Weight));
+  pars_list.register_command("node_thresh", &(node_thresh));
+  pars_list.register_command("dist_to_blocked", &(dist_to_blocked));
 
   udp_commands.init(process_command, serial_write);
 
@@ -891,6 +893,9 @@ void loop()
     last_cycle = now;
     //last_cycle += interval;
     cycle_count++;
+
+    // debug for robot_at_factory
+    distance_to_nearest_blocked_node(robot.xe, robot.ye, node_thresh);
 
     // Read and process sensors
     read_PIO_encoders();

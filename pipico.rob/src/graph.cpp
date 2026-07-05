@@ -211,14 +211,27 @@ void initial_node(float coords[2]){
 }
 
 // function to check if we are near a blocked node
-int near_blocked_node(float x, float y, float node_thresh)
+int near_blocked_node(float x, float y, float node_th)
 {
   for (int i = 0; i < N_blocked; i++) {
-    if (dist(node_coords[blocked_nodes[i]][0], node_coords[blocked_nodes[i]][1], x, y) < node_thresh) {
+    if (dist(node_coords[blocked_nodes[i]][0], node_coords[blocked_nodes[i]][1], x, y) < node_th) {
       return 1;
     }
   }
   return 0;
+}
+
+// updates the variable dist_to_blocked to the distance to the nearest blocked node
+void distance_to_nearest_blocked_node(float x, float y, float node_th)
+{
+    float dist_all_blocked[N_blocked];
+    float coords[2] = {x, y};
+    for (int i = 0; i < N_blocked; i++) {
+        dist_all_blocked[i] = opt_cost_to_go(coords, node_coords[blocked_nodes[i]]);
+    }
+    int sort_idx[N_blocked];
+    selection_sort(N_blocked, sort_idx, dist_all_blocked);
+    dist_to_blocked = dist_all_blocked[sort_idx[0]];
 }
 
 void clear_near_conn() {
