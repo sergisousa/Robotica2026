@@ -57,6 +57,7 @@ action_t::action_t()
   v_nom = 0.15;
   radius = C.distance(Pi);//  dist(C.x, C.y, xi, yi);
   alpha = 4;
+  calc_time = 0.0;
 
   ktrack = -0.1;
   wz = 4;
@@ -326,9 +327,12 @@ void action_t::opt_trajectory(void)
       for (int i = 0; i < ((N_nodes + 1) * N_layers + 1); i++) {
         path[i] = -1;
       }
-
+    
     } else {
+      float calc_start_time = millis();
       a_star(start_node, goal_node, path);
+      calc_time = millis() - calc_start_time;
+
     }
     traj_done = 1;
     for (int i = 0; i <= idx_path; i++) {

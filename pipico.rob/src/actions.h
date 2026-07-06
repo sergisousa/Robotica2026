@@ -74,6 +74,7 @@ class action_t
     float w0;
     float wall_dist_left_ref;
     float wall_dist_right_ref;
+    float calc_time;
 
     int path[(N_nodes + 1) * N_layers + 1];
     int global_path[N_global] = {114, 48, 108, 24, 102, 18, 96, 42, 6};

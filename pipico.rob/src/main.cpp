@@ -608,6 +608,7 @@ void setup()
   pars_list.register_command("cam_rz", &(camera_pars.rot_z));
   pars_list.register_command("goal_node", &(action.goal_node));
   pars_list.register_command("Rotation_Weight", &(Rotation_Weight));
+  pars_list.register_command("calc", &(action.calc_time));
 
   udp_commands.init(process_command, serial_write);
 
