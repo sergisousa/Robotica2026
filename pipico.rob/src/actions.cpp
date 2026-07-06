@@ -91,7 +91,7 @@ void action_t::set_theta(void)
 
 void action_t::goto_xy(void)
 {
-  e_xy = dist(Pf.x, Pf.y, robot.xe, robot.ye);
+  e_xy = dist(Pf.x, Pf.y, robot.xe,  robot.ye);
 
   thetaf = atan2(Pf.y - robot.ye, Pf.x - robot.xe);
   e_theta = dif_angle(thetaf, robot.thetae);
@@ -127,7 +127,7 @@ void action_t::follow_line(void)
   float uirx = robot.xe - Pi.x;
   float uiry = robot.ye - Pi.y;
 
-  float e_n = vifx * uiry - vify * uirx;
+  e_n = vifx * uiry - vify * uirx;
 
   // finally
   robot.w_req = ktheta * e_theta + kn * e_n;
@@ -151,7 +151,7 @@ void action_t::follow_circle(void)
   float r = dist(Pi.x, Pi.y, C.x, C.y);
   float d = dist(robot.xe, robot.ye, C.x,  C.y);
 
-  float e_n  = d - r;
+  e_n  = d - r;
 
   //theta error
   float uCrx = robot.xe - C.x;
@@ -212,7 +212,7 @@ void action_t::backwards_walk(void)
   float uirx = robot.xe - Pi.x;
   float uiry = robot.ye - Pi.y;
 
-  float e_n = vifx * uiry - vify * uirx;
+  e_n = vifx * uiry - vify * uirx;
 
   // finally
   robot.w_req = ktheta * e_theta + kn * e_n;

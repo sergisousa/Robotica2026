@@ -998,6 +998,11 @@ void loop()
       //serial_commands.send_command("se1", robot.Senc1);
       //serial_commands.send_command("se2", robot.Senc2);
 
+      serial_commands.send_command("PIDse0", robot.PID[0].Se);
+      serial_commands.send_command("PIDse1", robot.PID[1].Se);
+      serial_commands.send_command("err_thetafl", action.e_theta);
+      serial_commands.send_command("err_nfl", action.e_n);
+
       serial_commands.send_command("w1", robot.w1e);
       serial_commands.send_command("w2", robot.w2e);
 

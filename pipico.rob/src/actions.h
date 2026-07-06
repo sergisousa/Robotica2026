@@ -65,7 +65,7 @@ class action_t
     Vec2f C;
     float alpha, radius;
 
-    float e_xy, e_theta;
+    float e_xy, e_theta, e_n;
     float e_xy_tresh, e_theta_tresh;
 
     float kset_theta;
@@ -87,11 +87,9 @@ class action_t
     bool hold_box = 0;
     bool robotatfactory;
     bool set_last_theta;
-    bool robotatfactory1;
     bool traj_done;
     bool next_step;
     bool blocked_node;
-    bool next_node;
 
     action_t();
 
