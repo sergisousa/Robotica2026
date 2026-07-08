@@ -104,13 +104,13 @@ def plot_topology():
         plt.Line2D([0], [0], marker='o', linestyle='', color=NORMAL_COLOR_TOPO,
                    markersize=10, label='Nó normal'),
         plt.Line2D([0], [0], marker='o', linestyle='', color=BLOCKED_COLOR,
-                   markersize=10, label='Nó bloqueado (grau 1)'),
+                   markersize=10, label='Nó bloqueado'),
     ]
-    ax.legend(handles=handles, loc='upper right', fontsize=FONT_TICK*0.7, framealpha=0.9)
+    ax.legend(handles=handles, loc='lower left', fontsize=FONT_TICK, framealpha=0.9)
 
     fig.tight_layout()
     out_path = Path(__file__).resolve().parent / 'grafo_topologia_matched.png'
-    fig.savefig(out_path, dpi=DPI)
+    fig.savefig(out_path, dpi=DPI, bbox_inches = 'tight')
     plt.close(fig)
     print(f"Guardado em: {out_path}")
 
@@ -175,11 +175,11 @@ def plot_state_graph():
         plt.Line2D([0], [0], marker='o', linestyle='', color=BLOCKED_COLOR,
                    markersize=8, label='Nó bloqueado'),
     ]
-    ax.legend(handles=handles, loc='lower left', fontsize=FONT_TICK*0.65, framealpha=0.9)
+    ax.legend(handles=handles, loc='lower left', fontsize=FONT_TICK, framealpha=0.9)
 
     fig.tight_layout()
     out_path = Path(__file__).resolve().parent / 'grafo_estados_matched.png'
-    fig.savefig(out_path, dpi=DPI)
+    fig.savefig(out_path, dpi=DPI, bbox_inches = 'tight')
     plt.close(fig)
     print(f"Guardado em: {out_path}")
 
